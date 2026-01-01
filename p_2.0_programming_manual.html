@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>pHTML 2.0 – Manuale Pratico del Linguaggio</title>
+<style>
+body {
+margin: 0;
+font-family: system-ui, sans-serif;
+background-color: #0a0a14;
+color: #ddd;
+line-height: 1.55;
+display: flex;
+height: 100vh;
+overflow: hidden;
+}
+nav {
+width: 260px;
+background: #101020;
+color: #ccc;
+overflow-y: auto;
+position: fixed;
+left: 0; top: 0; bottom: 0;
+border-right: 1px solid #222;
+padding: 1rem;
+}
+nav h2 {
+color: #6cf;
+font-size: 1.2rem;
+}
+nav a {
+display: block;
+color: #ccc;
+text-decoration: none;
+margin: 0.4rem 0;
+padding: 0.3rem 0.5rem;
+border-radius: 4px;
+}
+nav a:hover { background: #23234a; color: #fff; }
+main {
+flex: 1;
+margin-left: 270px;
+overflow-y: auto;
+padding: 2rem;
+}
+h1, h2, h3 { color: #6cf; }
+pre {
+background: #16162a;
+padding: 0.7rem;
+border-radius: 4px;
+overflow-x: auto;
+color: #00ffe7;
+}
+table {
+width: 100%;
+border-collapse: collapse;
+margin-top: 0.7rem;
+background: #14141f;
+}
+th, td {
+border: 1px solid #333;
+padding: 0.45rem;
+text-align: left;
+}
+th { color: #6cf; }
+code { color: #9ef; }
+footer {
+text-align: center;
+font-size: 0.9rem;
+color: #888;
+margin-top: 2rem;
+padding: 1rem;
+border-top: 1px solid #222;
+}
+section { margin-bottom: 2.5rem; }
+.highlight {
+background: #13132a;
+border-left: 3px solid #6cf;
+padding: 1rem;
+margin: 1rem 0;
+}
+p em { color:#9ef; }
+.highlight strong { color:#6cf; }        
+ul, ol { margin-left: 1.5rem; }
+</style>
+</head>
+<body>
+
+<nav>
+<h2>Indice</h2>
+<a href="#intro">Cos'è pHTML</a>
+<a href="#struttura">Struttura documento</a>
+<a href="#tag-base">Tag fondamentali</a>
+<a href="#pianeti">Pianeti e lune</a>
+<a href="#oggetti">Oggetti avanzati</a>
+<a href="#esempi">Esempi pratici</a>
+<a href="#personalizza">Personalizzazione</a>
+<a href="#riferimento">Riferimento rapido</a>
+<a href="#problemi">Risoluzione problemi</a>
+</nav>
+
+<main>
+<header>
+<h1>pHTML 2.0 – Manuale Pratico del Linguaggio</h1>
+<p>Creare universi astronomici con codice semplice</p>
+</header>
+
+<section id="intro">
+<h2>📘 Cos'è pHTML?</h2>
+<p><strong>pHTML (Planet HTML)</strong> è un linguaggio per descrivere universi, sistemi solari, pianeti, stelle e altri oggetti astronomici usando una sintassi simile all’HTML.
+<br>
+Da pHTML 2.0 il linguaggio supporta il concetto di multiverso, con il tag `&lt;p‑multiverse&gt;` come contenitore principale di più universi.<br>
+Se sai scrivere HTML, puoi già creare interi universi!</p>
+<ul>
+<li>✨ Sintassi semplice e leggibile</li>
+<li>🪐 Tag specifici per ogni tipo di corpo celeste</li>
+<li>🎨 Rendering visuale automatico</li>
+<li>📊 Attributi fisici realistici (masse, distanze, composizione)</li>
+</ul>
+</section>
+
+<section id="struttura">
+<h2>🏗️ Struttura di un Documento pHTML</h2>
+<p>Ogni documento pHTML segue questa struttura base:</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;link rel="stylesheet" href="p_2.0_tags.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Il Mio Multiverso&lt;/h1&gt;
+&lt;p-multiverse&gt;
+&lt;p-universe&gt;
+&lt;p-solarsystem name="Sistema Solare"&gt;
+&lt;!-- Qui vanno stelle, pianeti, ecc. --&gt;
+&lt;/p-solarsystem&gt;
+&lt;/p-universe&gt;
+&lt;/p-multiverse&gt;
+
+&lt;script src="p_2.0_tags.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</section>
+
+<section id="tag-base">
+<h2>🌟 Tag Fondamentali</h2>
+
+<h3>&lt;p-multiverse&gt; – Contenitore Multiverso</h3>
+<p><em>Inizia sempre dal grande contenitore cosmico!</em>
+Il multiverso è come uno studio d’artista: dentro ci puoi mettere tutti i tuoi universi sperimentali, simulazioni o ipotesi.</p>        
+<pre><code>&lt;p-multiverse name="My Multiverse"&gt;
+&lt;p-universe name="Universe A"&gt;&lt;/p-universe&gt;
+&lt;p-universe name="Universe B"&gt;&lt;/p-universe&gt;
+&lt;/p-multiverse&gt;</code></pre>
+
+<table>
+<tr><th>Attributo</th><th>Descrizione</th><th>Esempio</th></tr>
+<tr><td>name</td><td>Nome opzionale del multiverso mostrato come titolo</td><td>"Parallel Dimensions"</td></tr>
+</table>
+<div class="highlight">
+💡 <strong>Consiglio:</strong> usa più universi nello stesso documento per confrontare modelli alternativi, come “Universo reale” e “Universo simulato”.
+</div>
+<hr>
+
+<h3>&lt;p-universe&gt; – Contenitore Universo</h3>
+<p>Può contenere uno o più sistemi solari.</p>
+<pre><code>&lt;p-universe
+name="Test Universe"
+version="2.1"
+coordinate-system="heliocentric"
+time-scale="realtime"&gt;
+&lt;p-solarsystem name="Solar System"&gt;&lt;/p-solarsystem&gt;
+&lt;/p-universe&gt;</code></pre>
+
+<table>
+<tr><th>Attributo</th><th>Descrizione</th><th>Esempio</th></tr>
+<tr><td>name</td><td>Nome dell'universo visualizzato nel titolo</td><td>"Test Universe"</td></tr>
+<tr><td>version</td><td>Versione o etichetta del progetto pHTML</td><td>"2.1"</td></tr>
+<tr><td>coordinate-system</td><td>Tipo di riferimento spaziale dell'universo (es. eliocentrico, galattico)</td><td>"heliocentric"</td></tr>
+<tr><td>time-scale</td><td>Scala temporale simulata o visuale</td><td>"realtime", "accelerated", "paused"</td></tr>
+</table>
+
+<hr>
+
+<h3>&lt;p-solarsystem&gt; – Sistema Stellare</h3>
+<p>Rappresenta un sistema solare con le sue stelle e pianeti.</p>
+<pre><code>&lt;p-solarsystem name="Sistema Solare" age="4.6 billion years"&gt;
+&lt;p-star name="Sole"&gt;&lt;/p-star&gt;
+&lt;/p-solarsystem&gt;</code></pre>
+
+<table>
+<tr><th>Attributo</th><th>Descrizione</th><th>Esempio</th></tr>
+<tr><td>name</td><td>Nome del sistema stellare</td><td>"Sistema Solare"</td></tr>
+<tr><td>age</td><td>Età o periodo stimato del sistema</td><td>"4.6 billion years"</td></tr>
+</table>
+<hr>
+<h3>&lt;p-star&gt; – Stelle</h3>
+<p>Le stelle sono la fonte di luce e calore del sistema.</p>
+<table>
+<tr><th>Attributo</th><th>Descrizione</th><th>Esempio</th></tr>
+<tr><td>name</td><td>Nome della stella</td><td>"Sole"</td></tr>
+<tr><td>type</td><td>Classe spettrale</td><td>"G2V"</td></tr>
+<tr><td>mass</td><td>Massa</td><td>"1solar"</td></tr>
+<tr><td>temperature</td><td>Temperatura superficiale</td><td>"5778K"</td></tr>
+<tr><td>luminosity</td><td>Luminosità</td><td>"1solar"</td></tr>
+<tr><td>radius</td><td>Raggio</td><td>"696000km"</td></tr>
+<tr><td>age</td><td>Età</td><td>"4.6 billion years"</td></tr>
+</table>
+
+<pre><code>&lt;p-star
+name="Sole"
+type="G2V"
+mass="1solar"
+temperature="5778K"
+luminosity="1solar"&gt;
+&lt;/p-star&gt;</code></pre>
+</section>
+<hr>
+<section id="pianeti">
+<h2>🪐 I Pianeti e le Lune</h2>
+<p>Ogni pianeta ha un tag che inizia con <code>p-</code>.</p>
+<ul>
+<li>&lt;p-mercury&gt;, &lt;p-venus&gt;, &lt;p-earth&gt;, &lt;p-mars&gt; ...</li>
+<li>&lt;p-planet&gt; per pianeti personalizzati o esopianeti.</li>
+</ul>
+<p>I pianeti sono i protagonisti del linguaggio pHTML.
+Grazie ai loro attributi puoi costruire mondi credibili o totalmente inventati, bilanciando dati scientifici e fantasia.</p>
+<p>Ogni attributo controlla una parte del rendering: <code>water</code> regola il colore blu, <code>terrain</code> la crosta visibile, <code>air</code> il tipo di atmosfera.</p>
+<table>
+<tr><th>Attributo</th><th>Descrizione</th><th>Esempio</th></tr>
+<tr><td>name</td><td>Nome personalizzato</td><td>"Kepler-442b"</td></tr>
+<tr><td>order</td><td>Ordine dal sole</td><td>"3"</td></tr>
+<tr><td>mass</td><td>Massa</td><td>"5.97e24kg" o "1earth"</td></tr>
+<tr><td>distance</td><td>Distanza</td><td>"2283 light-years" o "1 AU"</td></tr>        
+<tr><td>radius</td><td>Raggio</td><td>"6371km"</td></tr>
+<tr><td>water</td><td>% superficie acquatica</td><td>"70%"</td></tr>
+<tr><td>terrain</td><td>% superficie solida</td><td>"30%"</td></tr>
+<tr><td>air</td><td>Atmosfera</td><td>"breathable", "toxic", ...</td></tr>
+<tr><td>gravity</td><td>Gravità</td><td>"9.81m/s2"</td></tr>
+<tr><td>period</td><td>Periodo orbitale</td><td>"365.25 days"</td></tr>
+<tr><td>rotation</td><td>Rotazione</td><td>"24 hours"</td></tr>
+<tr><td>population-autoevolve</td><td>Ha vita (boolean)</td><td>-</td></tr>
+<tr><td>hasrings</td><td>Ha anelli (boolean)</td><td>-</td></tr>        
+</table>
+<div class="highlight">
+🌱 <strong>Curiosità:</strong> se aggiungi l’attributo <code>population-autoevolve</code>
+il pianeta mostrerà automaticamente l’indicatore “🧬 Has Life”. Se imposti l’attributo <code>hasrings</code> su <em>true</em> 
+il pianeta mostrerà automaticamente l'indicatore “💍”.        
+</div>        
+<hr>
+<h3>🌙 Lune – &lt;p-moon&gt;</h3>
+<p>I satelliti naturali si inseriscono dentro il pianeta.</p>
+<table>
+<tr><th>Attributo</th><th>Descrizione</th><th>Esempio</th></tr>
+<tr><td>name</td><td>Nome della luna</td><td>"Luna"</td></tr>
+<tr><td>distance</td><td>Distanza dal pianeta</td><td>"384400km"</td></tr>
+<tr><td>mass</td><td>Massa</td><td>"7.34e22kg"</td></tr>
+<tr><td>radius</td><td>Raggio</td><td>"1737km"</td></tr>
+<tr><td>tidal-locked</td><td>Rotazione sincrona (boolean)</td><td>-</td></tr>
+</table>
+
+<pre><code>&lt;p-earth&gt;
+&lt;p-moon name="Luna" distance="384400km" tidal-locked&gt;&lt;/p-moon&gt;
+&lt;/p-earth&gt;</code></pre>
+</section>
+<hr>
+<section id="oggetti">
+<h2>🌌 Oggetti Astronomici Avanzati</h2>
+<p>I tag avanzati ti permettono di arricchire il tuo universo con dettagli che vanno oltre i pianeti: nebulose, quasar, pulsar, costellazioni e ora anche fasce di asteroidi.</p>
+<p>Posizionali liberamente dentro i sistemi stellari, per creare mappe celesti davvero complete.</p>
+<h3>&lt;p-asteroidbelt&gt;</h3>
+<p>Rappresenta una fascia di asteroidi composta da milioni di frammenti rocciosi o metallici orbitanti nella stessa zona orbitale di un sistema stellare.
+Perfetta per collocare la “Main Belt” tra Marte e Giove o per creare pericolosi campi di detriti nelle tue ambientazioni sci‑fi.</p>
+
+<pre><code>&lt;p-asteroidbelt
+name="Main Asteroid Belt"
+composition="rock and metal"
+count="1000000"
+distance="2.7 AU"
+width="1.2 AU"
+discovered="1801"&gt;
+&lt;/p-asteroidbelt&gt;</code></pre>
+
+<p><em>Nella visualizzazione, la fascia comparirà come un anello granulare tra le orbite dei pianeti vicini.</em></p>
+        
+<h3>&lt;p-nebula&gt;</h3>
+<pre><code>&lt;p-nebula
+name="Nebulosa di Orione"
+type="Emission nebula"
+distance="1344 light-years"
+size="24 light-years"
+composition="Hydrogen, Helium"
+temperature="10000K"&gt;
+&lt;/p-nebula&gt;</code></pre>
+
+<h3>&lt;p-pulsar&gt;</h3>
+<pre><code>&lt;p-pulsar
+name="PSR B1919+21"
+type="Radio pulsar"
+period="1.337 seconds"
+magneticField="1e12 Gauss"
+distance="2283 light-years"
+age="15.6 million years"&gt;
+&lt;/p-pulsar&gt;</code></pre>
+
+<h3>&lt;p-quasar&gt;</h3>
+<pre><code>&lt;p-quasar
+name="3C 273"
+redshift="0.158"
+luminosity="4e12 solar"
+distance="2.5 billion light-years"
+massBH="886 million solar"&gt;
+&lt;/p-quasar&gt;</code></pre>
+
+<h3>&lt;p-constellation&gt;</h3>
+<pre><code>&lt;p-constellation
+name="Orion"
+hemisphere="Equatorial"
+brightest="Rigel"
+stars="7 major"
+myth="The Hunter of Greek mythology"&gt;
+&lt;/p-constellation&gt;</code></pre>
+
+<h3>&lt;p-cometgroup&gt;</h3>
+<pre><code>&lt;p-cometgroup
+name="Kreutz Sungrazers"
+composition="Ice, dust, rock"
+count="~2000 observed"
+orbitType="Highly elliptical"
+inclination="144°"
+discoveryYear="1888"&gt;
+&lt;/p-cometgroup&gt;</code></pre>
+</section>
+<hr>
+<section id="esempi">
+<h2>📚 Esempi Pratici Progressivi</h2>
+
+<div class="highlight">
+<h3>Esempio 1: Pianeta Singolo con Luna</h3>
+<pre><code>&lt;p-universe&gt;
+&lt;p-solarsystem name="Sistema Solare"&gt;
+&lt;p-earth order="3" water="70%" terrain="30%" mass="5.97e24kg"
+radius="6371km" air="breathable" gravity="9.81m/s2"
+population-autoevolve&gt;
+&lt;p-moon name="Luna" distance="384400km" radius="1737km"
+tidal-locked&gt;&lt;/p-moon&gt;
+&lt;/p-earth&gt;
+&lt;/p-solarsystem&gt;
+&lt;/p-universe&gt;</code></pre>
+</div>
+
+<div class="highlight">
+<h3>Esempio 2: Sistema Solare Interno Completo</h3>
+<pre><code>&lt;p-universe&gt;
+&lt;p-solarsystem name="Sistema Solare"&gt;
+&lt;p-star name="Sole" type="G2V" mass="1solar" temperature="5778K"
+luminosity="1solar" radius="696000km" age="4.6 billion years"&gt;
+&lt;/p-star&gt;
+
+&lt;p-mercury order="1" mass="0.055earth" radius="2439km" air="none" period="88 days"&gt;&lt;/p-mercury&gt;
+&lt;p-venus order="2" mass="0.815earth" radius="6051km" air="toxic" period="225 days"&gt;&lt;/p-venus&gt;
+&lt;p-earth order="3" water="70%" terrain="30%" mass="1earth" radius="6371km"
+air="breathable" period="365.25 days" population-autoevolve&gt;
+&lt;p-moon name="Luna" distance="384400km" tidal-locked&gt;&lt;/p-moon&gt;
+&lt;/p-earth&gt;
+&lt;p-mars order="4" mass="0.107earth" radius="3389km" air="thin" period="687 days"&gt;
+&lt;p-moon name="Phobos" distance="9376km"&gt;&lt;/p-moon&gt;
+&lt;p-moon name="Deimos" distance="23463km"&gt;&lt;/p-moon&gt;
+&lt;/p-mars&gt;
+&lt;/p-solarsystem&gt;
+&lt;/p-universe&gt;</code></pre>
+</div>
+
+<div class="highlight">
+<h3>Esempio 3: Sistema Solare Completo</h3>
+<p>Con tutti i pianeti e i principali satelliti.</p>
+<pre><code>&lt;p-universe&gt;
+&lt;p-solarsystem name="Sistema Solare"&gt;
+&lt;p-star name="Sole" type="G2V" mass="1solar" temperature="5778K"&gt;&lt;/p-star&gt;
+&lt;p-mercury order="1" mass="0.055earth" radius="2439km" air="none"&gt;&lt;/p-mercury&gt;
+&lt;p-venus order="2" mass="0.815earth" radius="6051km" air="toxic"&gt;&lt;/p-venus&gt;
+&lt;p-earth order="3" water="70%" terrain="30%" air="breathable" population-autoevolve&gt;
+&lt;p-moon name="Luna" distance="384400km" tidal-locked&gt;&lt;/p-moon&gt;
+&lt;/p-earth&gt;
+&lt;p-mars order="4" mass="0.107earth" radius="3389km" air="thin"&gt;
+&lt;p-moon name="Phobos" distance="9376km"&gt;&lt;/p-moon&gt;
+&lt;p-moon name="Deimos" distance="23463km"&gt;&lt;/p-moon&gt;
+&lt;/p-mars&gt;
+&lt;p-jupiter order="5" mass="317.8earth" radius="69911km" air="dense"&gt;
+&lt;p-moon name="Io"&gt;&lt;/p-moon&gt;
+&lt;p-moon name="Europa"&gt;&lt;/p-moon&gt;
+&lt;p-moon name="Ganymede"&gt;&lt;/p-moon&gt;
+&lt;p-moon name="Callisto"&gt;&lt;/p-moon&gt;
+&lt;/p-jupiter&gt;
+&lt;p-saturn order="6" mass="95.2earth" radius="58232km" air="dense"&gt;
+&lt;p-moon name="Titan"&gt;&lt;/p-moon&gt;
+&lt;p-moon name="Rhea"&gt;&lt;/p-moon&gt;
+&lt;p-moon name="Iapetus"&gt;&lt;/p-moon&gt;
+&lt;/p-saturn&gt;
+&lt;p-uranus order="7" mass="14.5earth" radius="25362km" air="dense"&gt;
+&lt;p-moon name="Titania"&gt;&lt;/p-moon&gt;
+&lt;p-moon name="Oberon"&gt;&lt;/p-moon&gt;
+&lt;/p-uranus&gt;
+&lt;p-neptune order="8" mass="17.1earth" radius="24622km" air="dense"&gt;
+&lt;p-moon name="Triton"&gt;&lt;/p-moon&gt;
+&lt;/p-neptune&gt;
+&lt;/p-solarsystem&gt;
+&lt;/p-universe&gt;</code></pre>
+</div>
+
+<div class="highlight">
+<h3>Esempio 4: Universo con Esopianeti</h3>
+<pre><code>&lt;p-universe&gt;
+&lt;p-solarsystem name="Kepler-442"&gt;
+&lt;p-star name="Kepler-442" type="K5V" mass="0.61solar" temperature="4402K" radius="0.60solar"&gt;&lt;/p-star&gt;
+&lt;p-planet name="Kepler-442b" order="1" water="60%" terrain="40%" mass="2.3earth" radius="1.34earth"
+air="breathable" period="112.3 days" population-autoevolve&gt;&lt;/p-planet&gt;
+&lt;/p-solarsystem&gt;
+&lt;p-solarsystem name="TRAPPIST-1"&gt;
+&lt;p-star name="TRAPPIST-1" type="M8V" mass="0.089solar" temperature="2566K"&gt;&lt;/p-star&gt;
+&lt;p-planet name="TRAPPIST-1e" order="4" water="50%" air="breathable" population-autoevolve&gt;&lt;/p-planet&gt;
+&lt;p-planet name="TRAPPIST-1f" order="5" water="80%" air="thin"&gt;&lt;/p-planet&gt;
+&lt;p-planet name="TRAPPIST-1g" order="6" water="20%" terrain="80%" air="breathable"&gt;&lt;/p-planet&gt;
+&lt;/p-solarsystem&gt;
+&lt;/p-universe&gt;</code></pre>
+</div>
+
+<div class="highlight">
+<h3>Esempio 5: Universo Completo con Oggetti Astronomici</h3>
+<pre><code>&lt;p-universe&gt;
+&lt;p-nebula name="Nebulosa di Orione (M42)" type="Emission nebula" distance="1344 light-years"
+size="24 light-years" composition="Hydrogen 90%, Helium 8%, Others 2%" luminosity="10000 solar"
+temperature="10000K"&gt;&lt;/p-nebula&gt;
+
+&lt;p-constellation name="Orion" hemisphere="Equatorial" brightest="Rigel"
+stars="7 major stars" myth="The Hunter - Greek mythology"&gt;&lt;/p-constellation&gt;
+
+&lt;p-solarsystem name="Sistema Solare"&gt;
+&lt;p-star name="Sole" type="G2V" mass="1solar" temperature="5778K"&gt;&lt;/p-star&gt;
+&lt;p-earth order="3" water="70%" terrain="30%" air="breathable" population-autoevolve&gt;
+&lt;p-moon name="Luna" distance="384400km" tidal-locked&gt;&lt;/p-moon&gt;
+&lt;/p-earth&gt;
+&lt;p-jupiter order="5" mass="317.8earth" radius="69911km"&gt;
+&lt;p-moon name="Europa"&gt;&lt;/p-moon&gt;
+&lt;p-moon name="Ganymede"&gt;&lt;/p-moon&gt;
+&lt;/p-jupiter&gt;
+&lt;/p-solarsystem&gt;
+
+&lt;p-solarsystem name="Alpha Centauri"&gt;
+&lt;p-star name="Alpha Centauri A" type="G2V" mass="1.1solar" temperature="5790K"&gt;&lt;/p-star&gt;
+&lt;p-planet name="Proxima Centauri b" order="1" water="30%" terrain="70%" air="thin" mass="1.17earth"&gt;&lt;/p-planet&gt;
+&lt;/p-solarsystem&gt;
+
+&lt;p-pulsar name="Pulsar del Granchio (PSR B0531+21)" type="Radio pulsar" period="33 milliseconds"
+magneticField="1e13 Gauss" distance="6523 light-years" mass="1.4solar"&gt;&lt;/p-pulsar&gt;
+
+&lt;p-quasar name="3C 273" redshift="0.158" luminosity="4 trillion solar"
+distance="2.5 billion light-years" massBH="886 million solar"
+spectralType="Broad-line"&gt;&lt;/p-quasar&gt;
+
+&lt;p-cometgroup name="Kreutz Sungrazers" composition="Ice, dust, silicate rock"
+count="Over 2000 discovered" orbitType="Highly elliptical"
+inclination="144°" discoveryYear="1888"&gt;&lt;/p-cometgroup&gt;
+&lt;/p-universe&gt;</code></pre>
+</div>
+<div class="highlight">
+<h3>Esempio 6: Multiverso con un universo con un sistema solare con due pianeti e un satellite</h3>
+<pre><code>
+ &lt;p-multiverse &gt;
+	 &lt;p-universe name="Test Universe" version="2.1" &gt;
+ 		&lt;p-solarsystem name="Solar System" age="4.6 billion years" &gt;
+ 			&lt;p-star name="Sun" type="G2V" mass="1.0 solar" &gt; &lt;/p-star &gt;
+ 			&lt;p-earth water="70%" terrain="30%" mass="5.97e24 kg" radius="6371 km" air="breathable" population-autoevolve &gt;
+ 				&lt;p-moon name="Luna" distance="384,400 km" tidal-locked &gt; &lt;/p-moon &gt;
+ 			&lt;/p-earth &gt;
+ 			&lt;p-mars water="0%" terrain="100%" mass="6.42e23 kg" radius="3389 km" air="thin" &gt; &lt;/p-mars &gt;
+ 		&lt;/p-solarsystem &gt;
+ 	&lt;/p-universe &gt;
+ &lt;/p-multiverse &gt;
+</code></pre>
+</div>
+</section>
+
+<section id="personalizza">
+<h2>🎨 Personalizzazione e Stile</h2>
+<p>Colore e dimensioni possono essere modificati via CSS:</p>
+<pre><code>p-earth .planet-visual {
+background: radial-gradient(circle, #00ff00, #006600);
+}
+.planet-visual {
+width: 100px;
+height: 100px;
+}</code></pre>
+</section>
+
+<section id="riferimento">
+<h2>📖 Riferimento Rapido degli Attributi</h2>
+<table>
+<tr><th>Tipo</th><th>Unità</th><th>Esempio</th></tr>
+<tr><td>Distanza</td><td>km, AU, light-years</td><td>"384400km", "1.5AU"</td></tr>
+<tr><td>Massa</td><td>kg, earth, solar</td><td>"5.97e24kg", "1earth"</td></tr>
+<tr><td>Temperatura</td><td>K, C</td><td>"5778K"</td></tr>
+<tr><td>Tempo</td><td>seconds, days, years</td><td>"4.6 billion years"</td></tr>
+</table>
+<p><strong>Attributi booleani:</strong> basta scriverli senza valore.</p>
+<ul>
+<li><code>population-autoevolve</code> – Il pianeta ha vita</li>
+<li><code>tidal-locked</code> – Luna in rotazione sincrona</li>
+<li><code>binary</code> – Sistema binario (in sviluppo)</li>
+</ul>
+</section>
+
+<section id="problemi">
+<h2>🆘 Risoluzione Problemi</h2>
+<ul>
+<li>I tag non appaiono: verifica CSS e JS inclusi correttamente.</li>
+<li>I colori non appaiono: assicurati che il CSS sia caricato prima del contenuto.</li>
+<li>Attributi non funzionano: controlla sintassi <code>attributo="valore"</code> e che sia supportato dal tag.</li>
+</ul>
+
+<h3>Compatibilità Browser</h3>
+<p>✅ Chrome/Edge consigliato – ✅ Firefox – ✅ Safari
+⚠️ Richiede Web Components (ES6+)</p>
+</section>
+
+<footer>
+<p><strong>Versione:</strong> pHTML 2.0 – <strong>Ultimo aggiornamento:</strong> 15 novembre 2025</p>
+<p>Licenza: Open Source per scopi educativi e creativi</p>
+<p>Buona creazione di universi! 🌌✨</p>
+</footer>
+</main>
+
+</body>
+</html>

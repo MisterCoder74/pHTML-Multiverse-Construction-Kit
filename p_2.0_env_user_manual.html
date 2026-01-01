@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Manuale Utente – 🌌 pHTML Development Environment</title>
+<style>
+body{
+background:#0b0c10;
+color:#e0e0e0;
+font-family:Segoe UI, Roboto, sans-serif;
+line-height:1.6;
+padding:30px;
+}
+h1,h2,h3{
+color:#7dd3fc;
+border-bottom:1px solid rgba(255,255,255,.1);
+padding-bottom:5px;
+}
+h1{font-size:28px;}
+h2{font-size:22px;margin-top:30px;}
+h3{font-size:18px;margin-top:25px;}
+a{color:#4fc3f7;}
+code{background:rgba(255,255,255,.1);padding:2px 4px;border-radius:4px;}
+.section{margin-bottom:30px;}
+ul{margin-left:20px;}
+.notice{
+background:rgba(255,255,255,.08);
+border-left:4px solid #4fc3f7;
+padding:10px 15px;
+margin:10px 0;
+}
+</style>
+</head>
+<body>
+
+<h1>🌌 Manuale Utente<br>pHTML Development Environment</h1>
+<p>
+Questo documento spiega come utilizzare l’ambiente visuale per creare, modificare ed esportare universi pHTML.
+È pensato per l’<strong>astronomo</strong> che usa l’interfaccia, senza necessità di conoscere JavaScript o HTML.
+</p>
+
+<div class="section">
+<h2>🧭 Navigazione generale</h2>
+<p>
+Nella parte superiore dell’interfaccia trovi una barra con cinque schede:
+</p>
+<ul>
+<li><b>📝 Visual Editor</b> – sezione principale per costruire e modificare il tuo universo.</li>
+<li><b>📥 Import JSON</b> – per caricare dati salvati in formato JSON.</li>
+<li><b>👁️ Viewer</b> – visualizza una panoramica descrittiva del sistema.</li>
+<li><b>📤 Export</b> – permette di esportare JSON e codice pHTML.</li>
+<li><b>🧩 pHTML Editor</b> – area per scrivere o modificare direttamente il codice pHTML.</li>
+</ul>
+<p>
+Per cambiare scheda clicca sull’icona desiderata: il contenuto centrale della pagina verrà aggiornato automaticamente.
+</p>
+</div>
+
+<div class="section">
+<h2>📝 Visual Editor</h2>
+<p>
+È la sezione dove si costruisce visivamente l’universo.
+Si articola in due pannelli principali:
+</p>
+        
+
+<h3>🌌 Universes</h3>
+<p>
+Siamo dentro il Multiverso. Questo pannello funge da radice e mostra l’elenco degli universi creati.
+Usa <b>+ New Universe</b> per crearne uno nuovo.
+Ogni universo mostra:
+<ul>
+<li>il nome</li>
+<li>il numero di sistemi stellari compresi</li>
+</ul>
+Cliccando su un univeso lo rendi “attivo” per gestirne i sistemi stellari.
+</p>        
+
+<h3>⭐ Systems</h3>
+<p>
+Mostra l’elenco dei sistemi stellari.
+Usa <b>+ New System</b> per crearne uno nuovo.
+Ogni sistema mostra:
+<ul>
+<li>il nome della stella e la sua tipologia,</li>
+<li>il numero di pianeti e di lune,</li>
+</ul>
+Cliccando su un sistema lo rendi “attivo” per gestirne i pianeti, le lune e gli oggetti extra.<br>
+        Il pannello di un sistema stellare, una volta attivato, mostra diverse zone sensibili<br>
+</p>
+
+<h4>🪐 Planets</h4>
+<p>
+<ul>
+<li><b>+ New Planet</b> apre una finestra modale per inserire i dati del pianeta:
+nome, ordine, massa, distanza, raggio, acqua, terreno, atmosfera, presenza di vita e di anelli.</li>
+<li>Ogni card di pianeta elenca anche <b>massa</b>, <b>raggio</b>, <b>percentuale d’acqua</b>, <b>atmosfera</b> e il <b>numero di lune</b>.</li>
+<li>Il pulsante <b>Moons</b> mostra il modale dedicato alle lune di quel pianeta.</li>
+<li>🗑️ Elimina rimuove il pianeta dal sistema.</li>
+</ul>
+</p>
+
+<h4>🌙 Moons</h4>
+<p>
+Dopo aver cliccato su “Moons”, appare il dettaglio delle lune del pianeta selezionato.
+<ul>
+<li><b>+ New Moon</b> apre un modale con nome, distanza, raggio, periodo orbitale, composizione.</li>
+<li>Ogni luna è elencata con nome, distanza, eventuale simbolo 🔒 se tidally locked, raggio e composizione.</li>
+<li>🗑️ Elimina rimuove la luna.</li>
+</ul>
+</p>
+</div>
+
+<h4>☄️ Extra objects</h4>
+<p>
+Di seguito alla lista dei pianeti viene visualizzato, in diversi comparti,l'elenco degli oggetti extra:
+<ul>
+<li>Cinture asteroidali</li>
+<li>Nebulose</li>
+<li>Costellazioni</li>
+<li>Pulsar</li>
+<li>Quasar</li>
+<li>Gruppi di comete</li>        
+<li>Il pulsante <b>+Add</b> di ogni categoria permette di aggiungere un oggetto.</li>
+</ul>
+</p>
+</div>
+
+<div class="section">
+<h2>📥 Import JSON</h2>
+<p>
+Questa scheda serve a caricare dati precedentemente esportati.
+</p>
+<ul>
+<li>Puoi <b>scegliere un file JSON</b> dal tuo computer o <b>incollare</b> il contenuto nel campo di testo.</li>
+<li>Clicca su <b>Apply JSON</b> per aggiornare l’universo corrente.</li>
+<li>Il sistema correggerà automaticamente eventuali campi mancanti (compatibilità tra versioni).</li>
+</ul>
+<div class="notice">
+Dopo l’importazione, torna nel Visual Editor per esplorare o modificare i dati.
+</div>
+</div>
+
+<div class="section">
+<h2>👁️ Viewer</h2>
+<p>
+Mostra una panoramica completa e <strong>sola lettura</strong> del sistema.
+</p>
+<ul>
+<li>Ogni sistema appare come un pannello con titolo ⭐ e stella principale.</li>
+<li>Per ogni pianeta vengono elencati ordine nel sistema stellare, atmosfera, presenza di vita e/o di anelli (🌱,💍), massa, raggio, atmosfera, acqua, terreno e numero di lune.</li>
+<li>Le lune sono annidate sotto il pianeta con distanza, raggio e simbolo “🔒” se caratterizzate da <code>Tide-lock</code>.</li>
+<li>Sono mostrati anche eventuali oggetti speciali (➰ Asteroid Belt, ☄️ comet groups, ✨ quasar, 🌀 pulsar, 🌟 constellations, 🌫️ nebulas).</li>
+</ul>
+<p>Il Viewer è utile per rivedere rapidamente la struttura senza rischiare modifiche accidentali.</p>
+</div>
+
+<div class="section">
+<h2>📤 Export</h2>
+<p>
+Da questa scheda puoi scaricare l’universo in due formati:
+</p>
+<ul>
+<li><b>Download JSON</b> – per salvare i dati strutturati e ricaricarli in seguito;</li>
+<li><b>Download pHTML</b> – per ottenere il codice pHTML completo, con tag <code>&lt;p‑planet&gt;</code>,
+<code>&lt;p‑moon&gt;</code> ecc., pronto all’uso nei renderer pHTML.</li>
+</ul>
+<p>
+Nel riquadro sottostante puoi anche consultare:
+<ul>
+<li>il JSON generato (sezione “Universe JSON”),</li>
+<li>il markup pHTML (sezione “pHTML Markup”).</li>
+</ul>
+</p>
+</div>
+
+<div class="section">
+<h2>🧩 pHTML Editor</h2>
+<p>
+È un editor di testo per scrivere o modificare direttamente codice pHTML <small><em>(<a href="p_2.0_programming_manual.html" target="_blank">Consulta il manuale del Linguaggio</a>)</em></small>.
+</p>
+<ul>
+<li>Nel riquadro grande puoi incollare o digitare il codice.</li>
+<li><b>👁️ View</b> crea un grande modale che mostra il risultato grafico del tuo codice, permettendo anche l astampa;        
+<li><b>💾 Save as HTML</b> crea una pagina HTML completa con il tuo contenuto pHTML;
+pronta per essere visualizzata in un browser.</li>
+<li><b>📤 Export JSON</b> analizza il contenuto pHTML e crea un file JSON equivalente al formato interno dell’app.</li>
+</ul>
+<div class="notice">
+Puoi così realizzare manualmente sistemi con tag pHTML personalizzati e reimportarli come dati strutturati.
+</div>
+</div>
+
+<div class="section">
+<h2>⚙️ Modal e creazione guidata</h2>
+<p>
+Ogni volta che clicchi un pulsante “+ New …” o “+ Add” appare una finestra modale.
+Compila i campi seguendo gli esempi mostrati in grigio: sono valori suggeriti che indicano il formato atteso.
+</p>
+<ul>
+<li><b>Name</b> – il nome identificativo (per i pianeti generici viene usato anche come attributo <code>name</code> in pHTML).</li>
+<li>Altri campi possono essere numeri, percentuali o testo – i segnaposto ti guidano nel formato.</li>
+</ul>
+<p>Premi <b>OK</b> per confermare o <b>Cancel</b> per annullare.</p>
+</div>
+
+<div class="section">
+<h2>💾 Salvataggio e messaggi di stato</h2>
+<p>
+Ogni operazione mostra in basso un messaggio temporaneo di supporto, come ad esempio:
+<ul>
+<li><span style="color:#7dd3fc;">✅</span> operazione riuscita,</li>
+<li><span style="color:#f87171;">❌</span> errore o campo mancante.</li>
+</ul>
+Puoi sempre esportare o salvare un backup JSON per non perdere i dati.
+</p>
+</div>
+
+<div class="section">
+<h2>📘 Suggerimenti d’uso</h2>
+<ul>
+<li>Crea prima un universo, poi un sistema stellare, poi i pianeti, e infine aggiungi le lune e gli altri oggetti extra se necessari.</li>
+<li>Usa i segnaposto nei modali come guida per i formati corretti (km, %, ly ecc.).</li>
+<li>Puoi modificare i dati in pHTML Editor e reimportarli, se vuoi fare correzioni massive.</li>
+<li>Nella sezione Export controlla sempre visivamente cosa verrà salvato.</li>
+<li>Conserva i file esportati assegnando loro lo stesso nome (es: <code>universe.json</code> e <code>universe.html</code>) nello stesso percorso
+dei file <code>p_2.0_tags.js</code> e <code>p_2.0_tags.css</code>.</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>🌌 Conclusione</h2>
+<p>
+Il pHTML Development Environment permette ad astronomi, gamers, appassinati di sci-fi e fantasy, o semplici curiosi di creare e visualizzare universi simulati
+senza scrivere codice manualmente. Attraverso le schede, le finestre di creazione e le esportazioni pHTML, puoi descrivere sistemi e fenomeni astronomici
+in modo coerente con il linguaggio pHTML 2.0.<br>
+<br>I più esperti e gli appasisonati di programmazione potranno fruire dell'editor pHTML nativo.
+</p>
+</div>
+
+</body>
+</html>

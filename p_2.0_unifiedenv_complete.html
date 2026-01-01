@@ -1,0 +1,1832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌌 pHTML Development Environment</title>
+<link rel="stylesheet" href="p_2.0_tags.css">
+     
+<style>
+/* ------------------- BASE LAYOUT ------------------- */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+font-family:'Segoe UI',Tahoma,sans-serif;
+background:linear-gradient(to bottom,#0a0e27 0%,#1a1a2e 100%);
+color:#fff;
+padding:20px;
+min-height:100vh;
+}
+.container{max-width:1400px;margin:0 auto; text-align: center;}
+h1{text-align:center;margin-bottom:20px;color:#ffd700;text-shadow:0 0 20px rgba(255,215,0,.5);}
+.manual{margin:1rem 0;padding:10px 4px;border-bottom:1px solid #ffd700;}
+.manual a{color:#fff;text-decoration:none;transition:.3s;}
+.manual a:hover{color:#ffd700;text-decoration:underline;}
+.logo {margin: .5rem auto; max-width: 800px;}
+/* ------------------- TABS ------------------- */
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;border-bottom:2px solid rgba(255,255,255,.1);}
+.tab{
+padding:12px 24px;background:rgba(255,255,255,.05);border:none;color:#fff;
+cursor:pointer;border-radius:8px 8px 0 0;transition:.3s;
+}
+.tab.active{background:rgba(255,215,0,.2);border-bottom:3px solid #ffd700;}
+.tab:hover{background:rgba(255,255,255,.1);}
+.tab-content{display:none;}
+.tab-content.active{display:block;animation:fadeIn .3s;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+/* ------------------- PANELS ------------------- */
+.panel{
+background:rgba(255,255,255,.05);
+border:1px solid rgba(255,255,255,.1);
+border-radius:12px;padding:20px;margin-bottom:20px;
+}
+.panel-header{display:flex;justify-content:space-between;align-items:center;
+margin-bottom:15px;padding-bottom:10px;border-bottom:2px solid rgba(255,215,0,.3);}
+.panel-title{font-size:18px;font-weight:bold;color:#ffd700;}
+
+/* ------------------- BUTTONS ------------------- */
+.btn{padding:8px 16px;border:none;border-radius:6px;cursor:pointer;font-size:14px;
+display:inline-flex;align-items:center;gap:6px;transition:.3s;}
+.btn-info{background:#a4f3f5;color:#000;}
+.btn-primary{background:#ffd700;color:#000;}
+.btn-primary:hover{background:#ffed4e;transform:translateY(-2px);}
+.btn-success{background:#27ae60;color:#fff;}
+.btn-danger{background:#e74c3c;color:#fff;}
+
+/* ------------------- LISTS ------------------- */
+.systems-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,2fr));gap:15px;background:rgba(255,255,255,.05);}
+.system-card{
+background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+border-radius:12px;padding:20px;cursor:pointer;transition:.3s;
+text-align: left;        
+}
+.system-card:hover{transform:translateY(-5px);box-shadow:0 10px 30px rgba(255,215,0,.2);border-color:#ffd700;}
+.system-card.active {
+  grid-column: 1 / -1; /* occupa tutte le colonne del grid */
+  width: 100%;
+  border-color:#ffd700;
+  background:rgba(255,255,255,.05);
+}
+.items-list{display:flex;flex-direction:column;gap:10px;}
+.item-card{
+background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);
+border-radius:8px;padding:15px;display:flex;justify-content:space-between;align-items:center;
+text-align: left;        
+}
+.extraobjects-block {
+  background:rgba(255,255,255,.05);      
+  display: flex;
+  justify-content: space-between;      
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+  width: 100%; /* AGGIUNGI QUESTO */
+}
+
+/* Ogni gruppo (cometgroup, quasar, ecc.) */
+.extraobjects-block > div {
+  //flex: 1 1 calc(25% - 12px);
+  min-width: 240px;
+
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 8px;
+  padding: 10px;
+  box-sizing: border-box; /* AGGIUNGI QUESTO */
+}      
+.item-actions{display:flex;gap:8px;}
+
+/* ------------------- JSON VIEW ------------------- */
+.json-container{
+background:#1e1e1e;border:1px solid rgba(255,255,255,.2);
+border-radius:8px;padding:20px;overflow-x:auto;max-height:450px;overflow-y:auto;
+}
+.json-container pre{color:#d4d4d4;font-family:'Courier New',monospace;font-size:13px;line-height:1.6;}
+
+/* ------------------- INFO / STATUS BOX ------------------- */
+.info-box{
+background:rgba(255,215,0,.1);border-left:4px solid #ffd700;
+padding:15px;margin:15px 0;border-radius:4px;font-size:14px;
+}
+.status{
+position:fixed;bottom:20px;right:20px;
+background:rgba(39,174,96,.9);color:#fff;padding:12px 20px;border-radius:8px;
+display:none;animation:slideIn .3s;
+}
+.status.show{display:block;}
+.status.error{background:rgba(231,76,60,.9);}
+@keyframes slideIn{from{transform:translateX(100%);}to{transform:translateX(0);}}
+
+/* ------------------- MODALS ------------------- */
+#modal-overlay{
+position:fixed;top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;z-index:2000;
+}
+#modal{
+background:#1a1a2e;color:#fff;padding:20px 25px;border-radius:10px;
+max-width:450px;width:95%;box-shadow:0 0 30px rgba(255,215,0,.3);
+}
+#modal h3{color:#ffd700;margin-bottom:10px;text-align:center;}
+#modal form{display:flex;flex-direction:column;gap:10px;}
+#modal label{font-size:13px;display:flex;flex-direction:column;gap:3px;}
+#modal input{
+padding:8px;border-radius:6px;border:none;outline:none;
+background:rgba(255,255,255,.1);color:#fff;
+}
+#modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:15px;}
+        
+#modal-overlay-phtml{
+position:fixed;top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;z-index:2000;
+}
+#modal-phtml{
+background:#1a1a2e;color:#fff;padding:20px 25px;border-radius:10px;
+max-width:1400px;width:95%;max-height:780px;overflow-y:scroll;box-shadow:0 6px 30px rgba(255,215,0,.3);
+}
+#modal-title-phtml {color:#ffd700;margin-bottom:10px;text-align:center;}
+#modal-body-phtml {color:#ffffff;margin-bottom:10px;text-align:center;}
+#modal-actions-phtml{display:flex;justify-content:flex-end;gap:10px;margin-top:15px;}  
+
+        
+        
+.textareacanvas {
+width: 30%;
+height: 500px;
+background: black;
+color: #eee;
+border: 1px solid #555;
+border-radius: 8px;
+padding: 10px;
+resize: vertical;
+}
+.logo {margin: .5rem auto; max-width: 800px;}        
+p {
+        margin: 1rem auto;
+        padding: .5rem;
+        font-size: 1.1rem;
+        }        
+        
+.controlscanvas {
+margin: 10px auto;
+text-align: center;
+}
+input[type="file"] {
+color: #ccc;
+}
+.buttoncanvas {
+margin: 10px auto;
+padding: 8px 20px;
+background: #1e90ff;
+border: none;
+color: white;
+border-radius: 6px;
+cursor: pointer;
+text-align: center;        
+}
+.buttoncanvas:hover {
+background: #0078d7;
+}
+.note {
+font-size: 13px;
+color: #999;
+}
+
+/* --- Modale info pianeta --- */
+.modalcanvas {
+display: none;
+position: fixed;
+top: 0; left: 0; right: 0; bottom: 0;
+background: rgba(0,0,0,0.6);
+align-items: center;
+justify-content: center;
+z-index: 999;
+}
+.modalcanvas-content {
+background: #111;
+padding: 20px 30px;
+border: 2px solid gold;
+border-radius: 10px;
+max-width: 400px;
+color: #fff;
+text-align: left;
+}
+.modalcanvas-content h2 {
+color: gold;
+margin-top: 0;
+}
+.closecanvas {
+float: right;
+font-size: 24px;
+cursor: pointer;
+color: #ccc;
+}
+        
+canvas {background: black; 
+        border: 1px solid #555;
+border-radius: 8px; }        
+        
+.closecanvas:hover { color: #fff; }        
+        
+        
+/* MEDIA QUERY FOR TABLETS */        
+@media (max-width: 900px) {
+   .container{max-width:800px;margin:0 auto;}  
+   .logo {margin: .25rem auto; max-width: 650px;} 
+   h1{text-align:left;margin-bottom:10px;color:#ffd700;text-shadow:0 0 10px rgba(255,215,0,.5); font-size: 1.2rem;}     
+}         
+        
+/* MEDIA QUERY FOR SMARTPHONES */        
+@media (max-width: 428px) {
+   .container{max-width:420px;margin:0 auto;}  
+   .logo {margin: .25rem auto; max-width: 360px;} 
+   h1{text-align:left;margin-bottom:10px;color:#ffd700;text-shadow:0 0 10px rgba(255,215,0,.5); font-size: 1.2rem;}     
+}
+       
+           
+        
+</style>
+</head>
+
+<body>
+<div class="container">
+<img src="pHTML-logo.png" class="logo"/>
+<h1>🌌 pHTML Development Environment</h1>
+<div class="manual">
+<a href="p_2.0_env_user_manual.html" target="_blank">Consulta il manuale del Tool</a><br>
+<a href="p_2.0_programming_manual.html" target="_blank">Consulta il manuale del Linguaggio</a><br>
+<a href="p_2.0_didactic_analysis.html" target="_blank">Consulta la valutazione didattica</a><br>         
+</div>
+
+<!-- ------- Nav Tabs ------- -->
+<div class="tabs">
+<button class="tab active" onclick="switchTab('editor')">📝 Visual Editor</button>
+<button class="tab" onclick="switchTab('import')">📥 Import JSON</button>
+<button class="tab" onclick="switchTab('viewer')">👁️ Viewer</button>
+<button class="tab" onclick="switchTab('export')">📤 Export</button>
+<button class="tab" onclick="switchTab('phtml')">🧩 pHTML Editor</button>
+<button class="tab" onclick="switchTab('canvas')">🧩 Solar System Viewer</button>        
+</div>
+
+<!-- ------- EDITOR TAB ------- -->
+<div id="tab-editor" class="tab-content active">
+<!-- ------- UNIVERSES PANEL ------- -->
+<div class="panel" id="universes-panel">
+<div class="panel-header">
+<div class="panel-title">🌌 Universes</div>
+<button class="btn btn-primary" onclick="openModal('universe')">+ New Universe</button>
+</div>
+<div id="universes-list" class="systems-list"></div>
+</div>
+        
+<div class="panel">
+<div class="panel-header">
+<div class="panel-title">⭐ Systems</div>
+<button class="btn btn-primary" onclick="openModal('system')">+ New System</button>
+</div>
+<div id="systems-list" class="systems-list"></div>
+</div>
+<div id="planets-section" class="panel" style="display:none;">
+<div class="panel-header">
+<div class="panel-title">🪐 Planets in <span id="current-system-name"></span></div>
+<button class="btn btn-primary" onclick="openModal('planet')">+ New Planet</button>
+</div>
+<div id="planets-list" class="items-list"></div>
+</div>
+
+<div id="moons-section" class="panel" style="display:none;">
+<div class="panel-header">
+<div class="panel-title">🌙 Moons of <span id="current-planet-name"></span></div>
+<button class="btn btn-primary" onclick="openModal('moon')">+ New Moon</button>
+</div>
+<div id="moons-list" class="items-list"></div>
+</div>
+<!-- <div id="dynamic-section" class="panel"></div> -->
+</div>
+
+<!-- ------- IMPORT TAB ------- -->
+<div id="tab-import" class="tab-content">
+<div class="panel">
+<div class="panel-header">
+<div class="panel-title">📥 Load JSON Data</div>
+<button class="btn btn-success" onclick="loadJSON()">Apply JSON</button>
+</div>
+<div class="info-box">Upload a JSON file or paste JSON data to load universe structures.</div>
+<input type="file" id="json-file" accept=".json" onchange="handleFile(event)" style="margin-bottom:15px;">
+<textarea id="json-input" placeholder="Paste JSON here..." style="width:100%;height:200px;"></textarea>
+</div>
+</div>
+
+<!-- ------- PHTML EDITOR ------- -->
+<div id="tab-phtml" class="tab-content">
+<div class="panel">
+<div class="panel-header">
+<div class="panel-title">🧩 pHTML Editor</div>
+<div>
+<button class="btn btn-info" onclick="renderCustomPHTML()">👁️ View</button>        
+<button class="btn btn-success" onclick="saveCustomPHTML()">💾 Get HTML</button>
+<button class="btn btn-primary" onclick="exportPHTMLtoJSON()">📤 Get JSON</button>
+</div>
+</div>
+<div class="info-box">
+Scrivi qui codice <strong>pHTML</strong>. Puoi salvarlo come HTML completo o esportarlo come JSON.
+</div>
+<textarea id="phtml-editor-area" placeholder="Scrivi qui il tuo codice pHTML..." style="width:100%;min-height:300px;"></textarea>
+
+<div id="phtml-json-output" class="json-container" style="margin-top:15px; display:none;">
+<pre id="phtml-json-text"></pre>
+</div>
+</div>
+</div>
+
+<!-- -------  VIEWER TAB ------- -->
+<div id="tab-viewer" class="tab-content">
+<div id="viewer-container"></div>
+</div>
+        
+<!-- ------- CANVAS TAB ------- -->
+<div id="tab-canvas" class="tab-content">
+<div class="panel">
+<div class="panel-header">
+<div class="panel-title">🪐 pHTML Solar System Viewer</div>
+</div>
+        
+<div class="controlscanvas">
+<p><b>Inserisci o carica un file JSON / pHTML:</b></p>
+<input type="file" id="fileInput" accept=".json,.txt,.html,.phtml" />
+<br><p class="note">(I dati restano nel browser, senza upload al server)</p><br>
+ </div>
+<div class="container"> 
+           <button class="buttoncanvas" id="loadBtn">Genera Mappa</button>          
+<section style="width: 100%; height: 540px; display: flex; gap: 20px; padding: 1rem; margin: 1rem auto; justify-content: center; align-items: flex-start;">
+<textarea class="textareacanvas" id="dataInput" placeholder="Incolla qui il contenuto JSON o pHTML..."></textarea>
+<canvas id="solarMap" width="900" height="500"></canvas>
+
+</section>       
+</div>   
+</div>
+</div> 
+</div>        
+
+        
+<!-- Modale informativo -->
+<div id="planetModalcanvas" class="modalcanvas">
+<div class="modalcanvas-content">
+<span class="closecanvas">&times;</span>
+<h2 id="planetNamecanvas"></h2>
+<div id="planetInfocanvas"></div>
+</div>
+</div>
+        
+<script src="phtml_canvas.js?4.0"></script>        
+        
+
+<!-- ------- EXPORT TAB ------- -->
+<div id="tab-export" class="tab-content">
+<div class="panel">
+<div class="panel-header">
+<div class="panel-title">📤 Export Options</div>
+<div>
+<button class="btn btn-success" onclick="downloadJSON()">📥 Get JSON</button>
+<button class="btn btn-primary" onclick="downloadPHTML()">📥 Get pHTML</button>
+</div>
+</div>
+<h4 style="margin:20px 0 10px 0;">Universe JSON:</h4>
+<div class="json-container"><pre id="json-output"></pre></div>
+
+<h4 style="margin:20px 0 10px 0;">pHTML Markup:</h4>
+<div class="json-container"><pre id="phtml-output"></pre></div>
+</div>
+</div>
+
+
+<!-- ------- MODAL (per creazione oggetti) ------- -->
+<div id="modal-overlay">
+<div id="modal">
+<h3 id="modal-title"></h3>
+<form id="modal-form"></form>
+<div id="modal-actions">
+<button class="btn btn-danger" type="button" onclick="closeModal()">Cancel</button>
+<button class="btn btn-success" type="button" onclick="submitModal()">OK</button>
+</div>
+</div>
+</div>
+
+     
+<!-- ------- MODAL (per render pHTML code) ------- -->        
+<div id="modal-overlay-phtml">
+<div id="modal-phtml">
+<h3 id="modal-title-phtml"></h3>
+<div id="modal-body-phtml"></div>
+
+<div id="modal-actions-phtml">
+<button class="btn btn-success" type="button" onclick="printModalPHTML()">Print</button>
+<button class="btn btn-primary" type="button" onclick="closeModalPHTML()">Close</button>
+
+</div>
+</div>
+</div>        
+
+<!-- ------- STATUS BOX ------- -->
+<div id="status" class="status"></div>
+
+<!-- Qui andrà incluso lo script JS completo -->
+<script>
+/* ============================================================
+🌌 pHTML Development Environment – Script principale
+============================================================ */
+
+/* ---------- Dati di base ---------- */
+let universe = {
+name: "My Universe",
+version: "2.0",
+age: "13.4 billion years",        
+systems: [
+{
+id: "solar-system",
+name: "Solar System",
+age: "4.6 billion years",
+star: {
+name: "Sun",
+type: "G2V",
+mass: "1.0 solar",
+temperature: "5778K",
+luminosity: "1.0 solar"
+},
+planets: [
+{
+id: "mercury",
+name: "Mercury",
+order: 1,
+water: "0%",
+terrain: "cratered rocky surface",
+mass: "3.30e23 kg",
+radius: "2439.7 km",
+air: "none",
+hasLife: false,
+hasRings: false,        
+moons: []
+},
+{
+id: "venus",
+name: "Venus",
+order: 2,
+water: "trace",
+terrain: "volcanic plains",
+mass: "4.87e24 kg",
+radius: "6051.8 km",
+air: "CO₂ thick",
+hasLife: false,
+hasRings: false,        
+moons: []
+},
+{
+id: "earth",
+name: "Earth",
+order: 3,
+water: "70%",
+terrain: "30%",
+mass: "5.97e24 kg",
+radius: "6371 km",
+air: "breathable",
+hasLife: true,
+hasRings: false,        
+moons: [
+{ name: "Luna", distance: "384,400 km", tidalLocked: true }
+]
+},
+{
+id: "mars",
+name: "Mars",
+order: 4,
+water: "0%",
+terrain: "100%",
+mass: "6.42e23 kg",
+radius: "3389.5 km",
+air: "thin",
+hasLife: false,
+hasRings: false,        
+moons: [
+{ name: "Phobos", distance: "9,376 km", tidalLocked: false },
+{ name: "Deimos", distance: "23,460 km", tidalLocked: false }
+]
+},
+{
+id: "jupiter",
+name: "Jupiter",
+order: 5,
+water: "trace",
+terrain: "gas giant atmosphere",
+mass: "1.90e27 kg",
+radius: "69,911 km",
+air: "hydrogen-helium",
+hasLife: false,
+hasRings: false,        
+moons: [
+{ name: "Io", distance: "421,700 km", tidalLocked: true },
+{ name: "Europa", distance: "670,900 km", tidalLocked: true },
+{ name: "Ganymede", distance: "1,070,400 km", tidalLocked: true },
+{ name: "Callisto", distance: "1,882,700 km", tidalLocked: true }
+]
+},
+{
+id: "saturn",
+name: "Saturn",
+order: 6,
+water: "trace",
+terrain: "gas giant with rings",
+mass: "5.68e26 kg",
+radius: "58,232 km",
+air: "hydrogen-helium",
+hasLife: false,
+hasRings: true,        
+moons: [
+{ name: "Titan", distance: "1,222,000 km", tidalLocked: true },
+{ name: "Rhea", distance: "527,000 km", tidalLocked: true },
+{ name: "Iapetus", distance: "3,560,000 km", tidalLocked: true },
+{ name: "Enceladus", distance: "238,000 km", tidalLocked: true }
+]
+},
+{
+id: "uranus",
+name: "Uranus",
+order: 7,
+water: "ice giant",
+terrain: "atmosphere of hydrogen, helium, methane",
+mass: "8.68e25 kg",
+radius: "25,362 km",
+air: "hydrogen-helium-methane",
+hasLife: false,
+hasRings: true,        
+moons: [
+{ name: "Titania", distance: "435,000 km", tidalLocked: true },
+{ name: "Oberon", distance: "583,000 km", tidalLocked: true },
+{ name: "Umbriel", distance: "266,000 km", tidalLocked: true },
+{ name: "Ariel", distance: "191,000 km", tidalLocked: true }
+]
+},
+{
+id: "neptune",
+name: "Neptune",
+order: 8,
+water: "ice giant",
+terrain: "atmosphere of methane and hydrogen",
+mass: "1.02e26 kg",
+radius: "24,622 km",
+air: "hydrogen-helium-methane",
+hasLife: false,
+hasRings: false,        
+moons: [
+{ name: "Triton", distance: "355,000 km", tidalLocked: true },
+{ name: "Proteus", distance: "117,600 km", tidalLocked: true },
+{ name: "Nereid", distance: "5,513,400 km", tidalLocked: false },
+{ name: "Larissa", distance: "73,500 km", tidalLocked: true }
+]
+}
+],
+asteroidbelts: [
+{ name: "Main Asteroid Belt", composition: "rock and metal", count: 1000000, distance: "2.7 AU", width: "1.2 AU", discovered: "1801" },
+{ name: "Inner Oort Cloud", composition: "rock and metal", count: 100000, distance: "2000 AU", width: "5000 AU", discovered: "1950" }, 
+{ name: "Outer Oort Cloud", composition: "rock and metal", count: 1000000, distance: "10000 AU", width: "50000 AU", discovered: "1970" }        
+],        
+cometgroups: [
+{ name: "Halley Family", orbitType: "elliptical", composition: "ice + dust", count: 20, pericenter: "0.6 AU", apocenter: "35 AU", inclination: "162°", discoveryYear: "1910" },
+{ name: "Jupiter Family", orbitType: "short-period", composition: "ice + silicates", count: 400, pericenter: "1 AU", apocenter: "6 AU", inclination: "10°", discoveryYear: "20th century" },
+{ name: "Oort Cloud Visitors", orbitType: "long-period", composition: "volatile ices", count: 100, pericenter: "0.2 AU", apocenter: "50000 AU", inclination: "various", discoveryYear: "1950" },
+{ name: "Kreutz Sungrazers", orbitType: "highly elliptical", composition: "silicate + ice", count: 3000, pericenter: "0.01 AU", apocenter: "100 AU", inclination: "144°", discoveryYear: "1843" }
+],
+
+quasars: [
+{ name: "3C 273", redshift: "0.158", luminosity: "2e39 W", distance: "2.4 billion ly", massBH: "8e8 solar", spectralType: "Type I", variability: "moderate", notes: "first discovered quasar" },
+{ name: "TON 618", redshift: "2.219", luminosity: "4e40 W", distance: "10.4 billion ly", massBH: "6.6e10 solar", spectralType: "Type I", variability: "low", notes: "hosts one of the largest known black holes" },
+{ name: "ULAS J1120+0641", redshift: "7.09", luminosity: "1e40 W", distance: "13 billion ly", massBH: "2e9 solar", spectralType: "radio quiet", variability: "low", notes: "very distant early universe quasar" },
+{ name: "APM 08279+5255", redshift: "3.91", luminosity: "5e40 W", distance: "12 billion ly", massBH: "2e10 solar", spectralType: "Type I", variability: "high", notes: "exceptionally luminous" }
+],
+
+pulsars: [
+{ name: "PSR B1919+21", period: "1.337 sec", magneticField: "1e12 G", distance: "2280 ly", mass: "1.4 solar", age: "10 million years", rotationSpeed: "45 rpm", type: "radio pulsar" },
+{ name: "Crab Pulsar", period: "0.033 sec", magneticField: "3.8e12 G", distance: "6500 ly", mass: "1.4 solar", age: "960 years", rotationSpeed: "1815 rpm", type: "young energetic pulsar" },
+{ name: "Vela Pulsar", period: "0.089 sec", magneticField: "3.4e12 G", distance: "1000 ly", mass: "1.4 solar", age: "11,000 years", rotationSpeed: "674 rpm", type: "gamma pulsar" },
+{ name: "PSR J0437−4715", period: "0.005757 sec", magneticField: "3e8 G", distance: "490 ly", mass: "1.4 solar", age: "1 billion years", rotationSpeed: "10400 rpm", type: "millisecond pulsar" }
+],
+
+constellations: [
+// EMISFERO NORD
+{ name: "Orion", stars: "Betelgeuse, Rigel, Bellatrix, Saiph", hemisphere: "northern", brightest: "Rigel", area: "594 sq. deg.", distanceRange: "200-1300 ly", myth: "Greek hunter Orion", notes: "easily visible in winter" },
+{ name: "Ursa Major", stars: "Dubhe, Merak, Alkaid, Mizar", hemisphere: "northern", brightest: "Alioth", area: "1280 sq. deg.", distanceRange: "60-120 ly", myth: "Great Bear", notes: "contains Big Dipper asterism" },
+{ name: "Cassiopeia", stars: "Schedar, Caph, Gamma Cassiopeiae", hemisphere: "northern", brightest: "Schedar", area: "598 sq. deg.", distanceRange: "50-550 ly", myth: "Queen of Ethiopia", notes: "distinctive W shape" },
+{ name: "Lyra", stars: "Vega, Sheliak, Sulafat", hemisphere: "northern", brightest: "Vega", area: "286 sq. deg.", distanceRange: "25-900 ly", myth: "Orpheus’s lyre", notes: "contains bright star Vega" },
+{ name: "Cygnus", stars: "Deneb, Albireo", hemisphere: "northern", brightest: "Deneb", area: "804 sq. deg.", distanceRange: "60-2500 ly", myth: "Swan", notes: "cross shape along Milky Way" },
+
+// EMISFERO SUD
+{ name: "Crux", stars: "Acrux, Mimosa, Gacrux", hemisphere: "southern", brightest: "Acrux", area: "68 sq. deg.", distanceRange: "90-350 ly", myth: "Southern Cross", notes: "iconic southern constellation" },
+{ name: "Centaurus", stars: "Alpha Centauri, Beta Centauri", hemisphere: "southern", brightest: "Alpha Centauri", area: "1060 sq. deg.", distanceRange: "4-500 ly", myth: "Centaur Chiron", notes: "contains nearest star system to Sun" },
+{ name: "Carina", stars: "Canopus, Miaplacidus", hemisphere: "southern", brightest: "Canopus", area: "494 sq. deg.", distanceRange: "230-7500 ly", myth: "Part of Argo Navis", notes: "second brightest star in the sky" },
+{ name: "Pavo", stars: "Peacock, Delta Pavonis", hemisphere: "southern", brightest: "Peacock", area: "378 sq. deg.", distanceRange: "20-300 ly", myth: "the Peacock", notes: "visible mostly from southern latitudes" },
+{ name: "Dorado", stars: "Alpha Doradus, Beta Doradus", hemisphere: "southern", brightest: "Alpha Doradus", area: "179 sq. deg.", distanceRange: "140-2000 ly", myth: "Dolphinfish", notes: "contains part of Large Magellanic Cloud" }
+],
+
+nebulas: [
+{ name: "Orion Nebula", type: "emission", distance: "1350 ly", size: "24 ly", composition: "H, He, O", luminosity: "1e38 erg/s", temperature: "10,000 K", discoveryYear: "1610" },
+{ name: "Crab Nebula", type: "supernova remnant", distance: "6500 ly", size: "11 ly", composition: "H, He, O", luminosity: "1e38 erg/s", temperature: "10,000 K", discoveryYear: "1054" },
+{ name: "Eagle Nebula", type: "emission", distance: "7000 ly", size: "70 ly", composition: "H, O, S", luminosity: "2e38 erg/s", temperature: "8,000 K", discoveryYear: "1745" },
+{ name: "Ring Nebula", type: "planetary", distance: "2300 ly", size: "1 ly", composition: "H, He", luminosity: "5e37 erg/s", temperature: "12,000 K", discoveryYear: "1779" }
+]
+}
+]
+};
+
+let currentSystemId = null;
+let currentPlanetId = null;
+let modalType = null;
+        
+
+/* ---------- Multiverso / livello universi ---------- */
+let multiverse = { universes: [] };
+multiverse.universes.push(universe);
+if (!multiverse.universes[0].id)
+multiverse.universes[0].id = multiverse.universes[0].name.toLowerCase().replace(/\s+/g, "-");
+let currentUniverseId = multiverse.universes[0].id;      
+
+/* ---------- Navigazione schede ---------- */
+function switchTab(name) {
+document.querySelectorAll(".tab-content").forEach(el => el.classList.remove("active"));
+document.querySelectorAll(".tab").forEach(el => el.classList.remove("active"));
+event.target.classList.add("active");
+document.getElementById(`tab-${name}`).classList.add("active");
+
+if (name === "editor") renderSystems();
+else if (name === "viewer") renderViewer();
+else if (name === "export") updateExports();
+}
+
+
+        
+/* ============================================================
+MODALE CREAZIONE / MODIFICA OGGETTI
+============================================================ */
+
+function openModal(type, pid = null) { // ✅ aggiunto parametro opzionale pid
+modalType = type;
+
+// ✅ se viene passato un planet id, aggiorna la variabile globale
+if (pid) {
+currentPlanetId = pid;
+console.log("Planet context set by openModal:", currentPlanetId);
+}
+
+document.getElementById("modal-title").textContent = "New " + type;
+const form = document.getElementById("modal-form");
+form.innerHTML = "";
+
+const fields = getFieldsForType(type);
+
+fields.forEach(f => {
+// Campo SELECT
+if (f.type === "select") {
+const optionsHTML = (f.options || [])
+.map(opt => `<option value="${opt}">${opt}</option>`)
+.join("");
+
+form.innerHTML += `
+<label style="display:block;margin-bottom:8px;">
+<span style="display:block;margin-bottom:3px;">${f.label}</span>
+<select name="${f.name}" style="padding:6px 8px;width:100%;">
+${optionsHTML}
+</select>
+</label>`;
+}
+// Campo CHECKBOX
+else if (f.type === "checkbox") {
+form.innerHTML += `
+<label style="display:flex;align-items:center;margin-bottom:8px;">
+<input type="checkbox" name="${f.name}" style="margin-right:6px;">
+${f.label}
+</label>`;
+}
+// Campo TESTO o NUMERO (default)
+else {
+const inputType = f.type || "text";
+const placeholder = f.placeholder ? `placeholder="${f.placeholder}"` : "";
+
+form.innerHTML += `
+<label style="display:block;margin-bottom:8px;">
+<span style="display:block;margin-bottom:3px;">${f.label}</span>
+<input type="${inputType}" name="${f.name}" ${placeholder} style="padding:6px 8px;width:100%;">
+</label>`;
+}
+});
+
+// Mostra il modale
+document.getElementById("modal-overlay").style.display = "flex";
+
+// Assicura che i bottoni OK/Cancel siano visibili
+const actions = document.querySelector("#modal-actions");
+if (actions) actions.style.display = "block";
+}
+        
+function closeModal() {
+document.getElementById("modal-overlay").style.display = "none";
+}
+
+function submitModal() {
+const inputs = document.querySelectorAll("#modal-form input, #modal-form select");
+const data = {};
+
+inputs.forEach(i => {
+if (i.type === "checkbox") {
+data[i.name] = i.checked;
+} else {
+data[i.name] = i.value.trim();
+}
+});
+
+// (Puoi mantenere la tua validazione se serve)
+if (!data.name) {
+showStatus("❌ Missing name", true);
+return;
+}
+
+createObject(modalType, data);
+closeModal();
+}
+        
+function renderCustomPHTML() {
+const codeToRender = document.getElementById('phtml-editor-area').value;
+const phtmlModal = document.getElementById('modal-body-phtml');
+phtmlModal.innerHTML = codeToRender ;
+document.getElementById("modal-overlay-phtml").style.display = "flex";
+}
+
+function closeModalPHTML() {
+document.getElementById("modal-overlay-phtml").style.display = "none";
+}   
+        
+function printModalPHTML()        {
+const modalContent = document.getElementById('phtml-editor-area').value;
+
+if (!modalContent || modalContent.trim() === "") {
+alert("Nessun contenuto da stampare.");
+return;
+}
+
+// Crea una nuova finestra
+const printWindow = window.open('', '_blank', 'width=800,height=600');
+
+// Scrive il contenuto nella nuova finestra
+printWindow.document.open();
+printWindow.document.write(`
+<html>
+<head>
+<title>Stampa contenuto PHTML</title>
+<style>
+body { font-family: sans-serif; padding: 20px; }
+</style>
+<link rel="stylesheet" href="p_2.0_tags.css">
+</head>
+<body>
+${modalContent}
+<script src="p_2.0_tags.js"><\/script>
+</body>
+</html>
+`);
+printWindow.document.close();
+
+// Quando la finestra ha finito di caricare, richiama la stampa
+printWindow.onload = function() {
+printWindow.focus();
+printWindow.print();
+printWindow.close();
+};
+}
+
+
+/* ---------- Campi per tipo di oggetto ---------- */
+function getFieldsForType(type) {
+switch (type) {
+/* ------------------------------------------------------
+UNIVERSO
+------------------------------------------------------ */
+case "universe":
+return [
+{ name: "name", label: "Name", type: "text", placeholder: "My Universe" },
+{ name: "version", label: "Version", type: "text", placeholder: "2.0" },
+{ name: "age", label: "Age", type: "text", placeholder: "13.4 billion years" }        
+];
+/* ------------------------------------------------------
+SISTEMA STELLARE
+------------------------------------------------------ */
+case "system":
+return [
+{ name: "name", label: "Name", type: "text", placeholder: "Solar System" },
+{ name: "age", label: "Age", type: "text", placeholder: "4.6 billion years" },
+{ name: "starName", label: "Star Name", type: "text", placeholder: "Sun" },
+{
+name: "starType",
+label: "Star Type",
+type: "select",
+options: ["O", "B", "A", "F", "G", "G2V", "G3V", "K", "M"]
+},
+{ name: "mass", label: "Mass (Star)", type: "text", placeholder: "1.0 solar" },
+{ name: "temperature", label: "Temperature", type: "text", placeholder: "5778K" },
+{ name: "luminosity", label: "Luminosity", type: "text", placeholder: "1.0 solar" }
+];
+
+/* ------------------------------------------------------
+PIANETA
+------------------------------------------------------ */
+case "planet":
+return [
+{ name: "name", label: "Name", type: "text", placeholder: "Nibiru" },
+{ name: "order", label: "Order", type: "number", placeholder: "5" },
+{ name: "mass", label: "Mass", type: "text", placeholder: "5.97e24 kg" },
+{ name: "radius", label: "Radius", type: "text", placeholder: "6371 km" },
+{ name: "water", label: "Water %", type: "text", placeholder: "70%" },
+{ name: "terrain", label: "Terrain %", type: "text", placeholder: "30%" },
+{
+name: "air",
+label: "Atmosphere",
+type: "select",
+options: ["none", "CO₂ thick", "breathable", "thin", "hydrogen-helium", "methane"]
+},
+{ name: "hasLife", label: "Has Life", type: "checkbox" },
+{ name: "distance", label: "Distance", type: "text", placeholder: "1 AU" },
+{ name: "hasRings", label: "Has Rings", type: "checkbox" }        
+];
+
+/* ------------------------------------------------------
+LUNA
+------------------------------------------------------ */
+case "moon":
+return [
+{ name: "name", label: "Name", type: "text", placeholder: "Luna" },
+{ name: "distance", label: "Distance", type: "text", placeholder: "384,400 km" },
+{ name: "tidalLocked", label: "Tidal Locked", type: "checkbox" },
+{ name: "mass", label: "Mass", type: "text", placeholder: "7.34e22 kg" },
+{ name: "radius", label: "Radius", type: "text", placeholder: "1737 km" },
+{ name: "period", label: "Orbital Period", type: "text", placeholder: "27.3 days" },
+{ name: "composition", label: "Composition", type: "text", placeholder: "silicate rock" }
+];
+ 
+/* ------------------------------------------------------
+FASCIA ASTEROIDI
+------------------------------------------------------ */                
+case "asteroidbelt":
+return [
+{ name: "name", label: "Name", type: "text", placeholder: "Main Belt" },
+{ name: "composition", label: "Composition", type: "text", placeholder: "rock and metal" },
+{ name: "count", label: "Asteroid Count", type: "number", placeholder: "1000000" },
+{ name: "distance", label: "Distance", type: "text", placeholder: "2.7 AU" },
+{ name: "width", label: "Width", type: "text", placeholder: "1.2 AU" },
+{ name: "discovered", label: "Discovered", type: "text", placeholder: "Date/Year" }
+];                
+
+/* ------------------------------------------------------
+GRUPPO DI COMETE
+------------------------------------------------------ */
+case "cometgroup":
+return [
+{ name: "name", label: "Name", type: "text", placeholder: "Halley Family" },
+{
+name: "orbitType", label: "Orbit Type", type: "select",
+options: ["elliptical", "short-period", "long-period", "highly elliptical"]
+},
+{ name: "composition", label: "Composition", type: "text", placeholder: "ice + dust" },
+{ name: "count", label: "Comet Count", type: "number", placeholder: "15" },
+{ name: "pericenter", label: "Pericenter", type: "text", placeholder: "0.2 AU" },
+{ name: "apocenter", label: "Apocenter", type: "text", placeholder: "35 AU" },
+{ name: "inclination", label: "Inclination", type: "text", placeholder: "162°" },
+{ name: "discoveryYear", label: "Discovery Year", type: "number", placeholder: "1910" },
+        { name: "distance", label: "Distance", type: "text", placeholder: "1 AU" },
+];
+
+/* ------------------------------------------------------
+QUASAR
+------------------------------------------------------ */
+case "quasar":
+return [
+{ name: "name", label: "Name", type: "text", placeholder: "QSO J000+01" },
+{ name: "redshift", label: "Redshift", type: "text", placeholder: "2.5" },
+{ name: "luminosity", label: "Luminosity", type: "text", placeholder: "1e40 W" },
+{ name: "distance", label: "Distance", type: "text", placeholder: "12 billion ly" },
+{ name: "massBH", label: "Black Hole Mass", type: "text", placeholder: "1e9 solar" },
+{
+name: "spectralType", label: "Spectral Type", type: "select",
+options: ["Type I", "Type II", "radio quiet", "radio loud"]
+},
+{
+name: "variability", label: "Variability", type: "select",
+options: ["low", "moderate", "high"]
+},
+{ name: "notes", label: "Notes", type: "text", placeholder: "bright in radio band" }
+];
+
+/* ------------------------------------------------------
+PULSAR
+------------------------------------------------------ */
+case "pulsar":
+return [
+{ name: "name", label: "Name", type: "text", placeholder: "PSR B1919+21" },
+{ name: "period", label: "Period", type: "text", placeholder: "1.337 sec" },
+{ name: "magneticField", label: "Magnetic Field", type: "text", placeholder: "1e12 G" },
+{ name: "distance", label: "Distance", type: "text", placeholder: "2280 ly" },
+{ name: "mass", label: "Mass", type: "text", placeholder: "1.4 solar" },
+{ name: "age", label: "Age", type: "text", placeholder: "10 million years" },
+{ name: "rotationSpeed", label: "Rotation Speed", type: "text", placeholder: "15 rpm" },
+{
+name: "type", label: "Type", type: "select",
+options: ["radio pulsar", "gamma pulsar", "millisecond pulsar"]
+}
+];
+
+/* ------------------------------------------------------
+COSTELLAZIONE
+------------------------------------------------------ */
+case "constellation":
+return [
+{ name: "name", label: "Name", type: "text", placeholder: "Orion" },
+{ name: "stars", label: "Stars (comma separated)", type: "text", placeholder: "Betelgeuse, Rigel, Bellatrix" },
+{
+name: "hemisphere", label: "Visible Hemisphere", type: "select",
+options: ["northern", "southern"]
+},
+{ name: "brightest", label: "Brightest Star", type: "text", placeholder: "Rigel" },
+{ name: "area", label: "Area", type: "text", placeholder: "594 sq. deg." },
+{ name: "distanceRange", label: "Distance Range", type: "text", placeholder: "200-1300 ly" },
+{ name: "myth", label: "Myth", type: "text", placeholder: "Greek hunter Orion" },
+{ name: "notes", label: "Notes", type: "text", placeholder: "easily visible in winter" }
+];
+
+/* ------------------------------------------------------
+NEBULOSA
+------------------------------------------------------ */
+case "nebula":
+return [
+{ name: "name", label: "Name", type: "text", placeholder: "Crab Nebula" },
+{
+name: "type", label: "Type", type: "select",
+options: ["emission", "reflection", "planetary", "supernova remnant"]
+},
+{ name: "distance", label: "Distance", type: "text", placeholder: "6500 ly" },
+{ name: "size", label: "Size", type: "text", placeholder: "11 ly" },
+{ name: "composition", label: "Composition", type: "text", placeholder: "H, He, O" },
+{ name: "luminosity", label: "Luminosity", type: "text", placeholder: "1e38 erg/s" },
+{ name: "temperature", label: "Temperature", type: "text", placeholder: "10,000 K" },
+{ name: "discoveryYear", label: "Discovery Year", type: "number", placeholder: "1054" }
+];
+
+/* ------------------------------------------------------
+OGGETTO GENERICO (fallback)
+------------------------------------------------------ */
+default:
+return [{ name: "name", label: "Name", type: "text", placeholder: "Unnamed Object" }];
+}
+}
+
+
+/* ---------- Validazione dei tag p-* ---------- */
+function validateTagName(tag) {
+return /^p-[a-z]+$/.test(tag);
+}
+
+/* ============================================================
+CREAZIONE OGGETTI
+============================================================ */
+function createObject(type, data) {
+console.log("Type:", type);
+/* === NUOVO: Creazione Universo === */
+if (type === "universe") {
+multiverse.universes.push({
+id: `uni-${Date.now()}`,
+name: data.name || "Unnamed Universe",
+version: data.version || "2.0",
+age: data.age || "13.4 billion years",        
+systems: []
+});
+showStatus("Universe created!");
+renderUniverses();
+return;
+}
+/* recupera l’universo attivo */
+const universe = multiverse.universes.find(u => u.id === currentUniverseId);
+if (!universe) {
+showStatus("⚠️ Nessun universo selezionato", true);
+return;
+}        
+if (type === "system") {
+universe.systems.push({
+id: `sys-${Date.now()}`,
+name: data.name || "Unnamed System",
+age: data.age || "unknown",
+star: {
+name: data.starName || "Star",
+type: data.starType || "",
+mass: data.mass || "",
+temperature: data.temperature || "",
+luminosity: data.luminosity || ""
+},
+planets: [],
+asteroidbelts: [],        
+cometgroups: [],
+quasars: [],
+pulsars: [],
+constellations: [],
+nebulas: []
+});
+showStatus("System created!");
+renderSystems();
+} else if (type === "planet") {
+const system = universe.systems.find(s => s.id === currentSystemId);
+if (!system) return;
+system.planets.push({
+id: `p-${Date.now()}`,
+...data,
+hasLife: data.hasLife === "true" || data.hasLife === true,
+hasRings: data.hasRings === "true" || data.hasRings === true,
+moons: []
+});
+showStatus("Planet created!");
+//renderDynamic("planet");
+} else if (type === "moon") {
+console.log("currentSystemId:", currentSystemId);
+console.log("currentPlanetId:", currentPlanetId);        
+const sys = universe.systems.find(s => s.id === currentSystemId);
+const pl = sys?.planets.find(p => p.id === currentPlanetId);
+if (!pl) return;
+pl.moons.push({ name: data.name, distance: data.distance, tidalLocked: data.tidalLocked === "true" });
+showStatus("Moon created!");
+        renderMoons();
+} else if (["cometgroup", "quasar", "pulsar", "constellation", "nebula"].includes(type)) {
+const sys = universe.systems.find(s => s.id === currentSystemId);
+sys[type + "s"].push(data);
+showStatus(type + " created!");
+//renderDynamic(type);
+} else if (type === "asteroidbelt") {
+const sys = universe.systems.find(s => s.id === currentSystemId);
+sys.asteroidbelts = sys.asteroidbelts || [];
+sys.asteroidbelts.push(data);
+showStatus("Asteroid Belt created!");
+}        
+}
+
+/* ============================================================
+GERARCHIA: UNIVERSI → SISTEMI → PIANETI → LUNE
+============================================================ */
+
+/* ---------- Rendering Univeesi ---------- */        
+function renderUniverses() {
+const container = document.getElementById("universes-list");
+container.innerHTML = multiverse.universes.map(u => `
+<div class="system-card ${u.id === currentUniverseId ? "active" : ""}" onclick="selectUniverse('${u.id}')">
+<h3>🌌 ${u.name}</h3>
+<p>Age: ${u.age} - Contains: ${u.systems.length} systems</p>
+<button class="btn btn-primary" onclick="openModal('system')">+ Add System</button>
+</div>
+`).join("");
+
+// Mostra un pulsante globale per creare nuovi universi
+const addBtn = `<div style="margin:10px 0;"><button class="btn btn-success" onclick="openModal('universe')">🌌 + New Universe</button></div>`;
+container.insertAdjacentHTML("afterbegin", addBtn);
+}
+
+function selectUniverse(id) {
+currentUniverseId = id;
+const u = multiverse.universes.find(u => u.id === id);
+if (!u) return;
+// Mantiene la compatibilità con tutto il codice esistente
+universe = u;
+renderSystems();
+}
+        
+function deleteUniverse(id) {
+if (!confirm("Delete this universe?")) return;
+multiverse.universes = multiverse.universes.filter(u => u.id !== id);
+if (currentUniverseId === id) currentUniverseId = null;
+renderUniverses();
+}        
+        
+        
+/* ---------- Rendering Sistemi ---------- */
+function renderSystems() {
+const container = document.getElementById("systems-list");
+container.innerHTML = universe.systems
+.map(s => {
+const pc = s.planets?.length || 0;
+const mc = s.planets?.reduce((n, p) => n + (p.moons?.length || 0), 0) || 0;
+
+let html = `<div class="system-card ${s.id === currentSystemId ? "active" : ""}" onclick="selectSystem('${s.id}')">
+<h3>⭐ ${s.name}</h3>
+<p>Star: ${s.star.name} (${s.star.type})</p>
+<p>🪐 ${pc} planets • 🌙 ${mc} moons</p>`;
+
+// se è il sistema attivo → mostra pianeti + extra objects
+if (s.id === currentSystemId) {
+html += renderPlanets(true); // <== stessa lista completa con pulsanti
+
+html += `<div class="extraobjects-block">`;
+html += makeExtraBlock(s, "asteroidbelt", "➰ Asteroid Belts");        
+html += makeExtraBlock(s, "cometgroup", "☄️ Comet Groups");
+html += makeExtraBlock(s, "quasar", "✨ Quasars");
+html += makeExtraBlock(s, "pulsar", "🌀 Pulsars");
+html += makeExtraBlock(s, "constellation", "🌟 Constellations");
+html += makeExtraBlock(s, "nebula", "☁️ Nebulas");
+html += `</div>`;
+}
+
+html += `</div>`;
+return html;
+})
+.join("");
+}
+        
+// crea blocchi per i nuovi tipi
+function makeExtraBlock(sys, key, title) {
+  const arr = sys[key + "s"] || [];
+  
+  let extra = `
+    <div style="border: 1px solid white; padding: 12px; margin-bottom: 16px; width: 100%;">
+      <div style="display: flex; align-items: center; margin-bottom: 12px;">
+        <h4 style="font-size: 14px; margin: 0;">${title}</h4>
+        <button class="btn btn-primary" style="margin-left: 10px;" onclick="openModal('${key}')">+ Add</button>
+      </div>`;
+  
+  if (!arr.length) {
+    extra += `<p style="opacity: 0.5; margin: 0;">No ${key}s</p>`;
+  } else {
+    extra += `<div style="display: flex; flex-wrap: wrap; gap: 12px;">`;
+    
+    extra += arr.map(o => {
+      let details = "";
+      switch (key) {
+        case "constellation":
+          details = `
+            <p style="font-size: 12px; opacity: 0.8; margin: 3px 0;">
+              <b>Stars:</b> ${o.stars || "?"}<br>
+              <b>Hemisphere:</b> ${o.hemisphere || "?"} |
+              <b>Brightest:</b> ${o.brightest || "?"}<br>
+              <b>Area:</b> ${o.area || "?"} |
+              <b>Dist. Range:</b> ${o.distanceRange || "?"}<br>
+              <b>Myth:</b> ${o.myth || "?"}<br>
+              <b>Notes:</b> ${o.notes || ""}
+            </p>`;
+          break;
+        case "nebula":
+          details = `
+            <p style="font-size: 12px; opacity: 0.8; margin: 3px 0;">
+              <b>Type:</b> ${o.type || "?"} |
+              <b>Distance:</b> ${o.distance || "?"}<br>
+              <b>Size:</b> ${o.size || "?"} |
+              <b>Composition:</b> ${o.composition || "?"}<br>
+              <b>Luminosity:</b> ${o.luminosity || "?"} |
+              <b>Temp:</b> ${o.temperature || "?"} |
+              <b>Year:</b> ${o.discoveryYear || "?"}
+            </p>`;
+          break;
+        case "cometgroup":
+          details = `
+            <p style="font-size: 12px; opacity: 0.8; margin: 3px 0;">
+              <b>Orbit:</b> ${o.orbitType || "?"} |
+              <b>Composition:</b> ${o.composition || "?"}<br>
+              <b>Count:</b> ${o.count || "?"} |
+              <b>Pericenter:</b> ${o.pericenter || "?"} |
+              <b>Apocenter:</b> ${o.apocenter || "?"}<br>
+              <b>Inclination:</b> ${o.inclination || "?"} |
+              <b>Year:</b> ${o.discoveryYear || "?"}
+            </p>`;
+          break;
+        case "quasar":
+          details = `
+            <p style="font-size: 12px; opacity: 0.8; margin: 3px 0;">
+              <b>Redshift:</b> ${o.redshift || "?"} |
+              <b>Luminosity:</b> ${o.luminosity || "?"}<br>
+              <b>Distance:</b> ${o.distance || "?"} |
+              <b>BH Mass:</b> ${o.massBH || "?"}<br>
+              <b>Spectral:</b> ${o.spectralType || "?"} |
+              <b>Var:</b> ${o.variability || "?"}<br>
+              <b>Notes:</b> ${o.notes || ""}
+            </p>`;
+          break;
+        case "pulsar":
+          details = `
+            <p style="font-size: 12px; opacity: 0.8; margin: 3px 0;">
+              <b>Period:</b> ${o.period || "?"} |
+              <b>Field:</b> ${o.magneticField || "?"}<br>
+              <b>Distance:</b> ${o.distance || "?"} |
+              <b>Mass:</b> ${o.mass || "?"}<br>
+              <b>Age:</b> ${o.age || "?"} |
+              <b>Rotation:</b> ${o.rotationSpeed || "?"}<br>
+              <b>Type:</b> ${o.type || "?"}
+            </p>`;
+          break;
+        case "asteroidbelt":
+                details = `
+                <p style="font-size: 12px; opacity: 0.8; margin: 3px 0;">
+                <b>Composition:</b> ${o.composition || "?"}<br>
+                <b>Asteroids:</b> ${o.count || "?"}<br>
+                <b>Distance:</b> ${o.distance || "?"} |
+                <b>Width:</b> ${o.width || "?"}<br>
+                ${o.discovered ? `<b>Discovered:</b> ${o.discovered}` : ""}
+                </p>`;
+                break;              
+      }
+      
+      return `
+        <div class="item-card">
+          <div>
+            <b>${o.name || "Unnamed"}</b>
+            ${details}
+          </div>
+        </div>`;
+    }).join("");
+    
+    extra += `</div>`; // chiude il flex container delle card
+  }
+  
+  extra += `</div>`; // chiude il contenitore principale
+  return extra;
+}
+        
+/* ---------- Selezione Sistema ---------- */
+function selectSystem(id) {
+currentSystemId = id;
+currentPlanetId = null;
+renderSystems();
+//renderPlanets();
+document.getElementById("moons-section").style.display = "none";
+}
+
+/* ---------- Rendering Pianeti ---------- */
+function renderPlanets(returnHTML = false) {
+const sys = universe.systems.find(s => s.id === currentSystemId);
+const section = document.getElementById("planets-section");
+
+if (!sys) {
+if (!returnHTML) section.style.display = "none";
+return returnHTML ? "" : null;
+}
+
+const listHtml =
+sys.planets?.map(p => `
+<div class="item-card">
+<div>
+<h4>🪐 ${p.name}</h4>
+<p style="font-size:12px;opacity:.7;margin:2px 0;">
+<b>Order:</b> ${p.order || "?"} |
+<b>Air:</b> ${p.air || "n/a"} |
+<b>Has life:</b> ${p.hasLife ? "🌱" : "❌"}
+</p>
+<p style="font-size:12px;opacity:.7;margin:2px 0;">
+<b>Mass:</b> ${p.mass || "?"} |
+<b>Radius:</b> ${p.radius || "?"}
+</p>
+<p style="font-size:12px;opacity:.7;margin:2px 0;">
+<b>Distance:</b> ${p.distance || "?"} |
+<b>Rings:</b> ${p.hasRings ? "💍 Yes" : "❌ No"}
+</p>
+<p style="font-size:12px;opacity:.7;margin:2px 0;">
+<b>Water:</b> ${p.water || "?"} |
+<b>Terrain:</b> ${p.terrain || "?"} |
+<b>Moons:</b> ${p.moons?.length || 0}
+</p>
+</div>
+<div class="item-actions">
+<button class="btn btn-primary" onclick="selectPlanet('${p.id}')">Moons</button>
+<button class="btn btn-danger" onclick="deletePlanet('${p.id}')">🗑️</button>
+</div>
+</div>
+`).join('') || "<p style='opacity:.5;'>No planets</p>";
+
+// === Se sono nella versione “inline” ritorno l’HTML completato ===
+if (returnHTML) {
+return `
+<div class="planets-inline" style="margin-bottom: 16px;">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+<h4 style="margin:0;">🪐 Planets</h4>
+<button class="btn btn-primary" onclick="openModal('planet')">+ Add Planet</button>
+</div>
+${listHtml}
+</div>`;
+}
+
+// === altrimenti, comportamento classico nel pannello inferiore ===
+section.style.display = "block";
+document.getElementById("current-system-name").textContent = sys.name;
+document.getElementById("planets-list").innerHTML = listHtml;
+}
+
+/* ---------- Selezione Pianeta ---------- */
+function selectPlanet(pid) {
+currentPlanetId = pid;
+const sys = universe.systems.find(s => s.id === currentSystemId);
+const planet = sys?.planets.find(p => p.id === pid);
+if (!planet) return;
+
+// Costruisci l’HTML con elenco lune
+let content = `<h3 style="color:#ffd700;text-align:center;">🌙 Moons of ${planet.name}</h3>`;
+
+if (!planet.moons || planet.moons.length === 0) {
+content += `<p style="text-align:center;opacity:.7;">No moons found.</p>`;
+} else {
+content += `<div style="margin-top:10px;display:flex;flex-direction:column;gap:8px;">`;
+content += planet.moons.map(m => `
+<div class="item-card" style="background:rgba(255,255,255,.05);padding:10px;">
+<div>
+<b>${m.name}</b> ${m.tidalLocked ? "🔒" : ""}<br>
+<span style="font-size:12px;opacity:.8;">
+<b>Distance:</b> ${m.distance || "?"} |
+<b>Radius:</b> ${m.radius || "?"} |
+<b>Period:</b> ${m.period || "?"}<br>
+<b>Composition:</b> ${m.composition || "?"}
+</span>
+</div>
+</div>`
+).join("");
+content += `</div>`;
+}
+
+// Pulsante aggiungi luna
+content += `<div style="margin-top:15px;text-align:center;">
+<button class="btn btn-primary" onclick="openModal('moon', '${planet.id}')">+ Add Moon</button>
+</div>`;
+
+// Mostra il contenuto nel modale principale
+const form = document.getElementById("modal-form");
+form.innerHTML = content;
+
+//document.getElementById("modal-title").textContent = `Moons of ${planet.name}`;
+document.querySelector("#modal-actions").style.display = "none"; // nasconde bottoni "OK / Cancel"
+document.getElementById("modal-overlay").style.display = "flex";
+}
+        
+document.getElementById("modal-overlay").addEventListener("click", e => {
+// chiude solo se clicco nello sfondo, non dentro al box
+if (e.target.id === "modal-overlay") closeModal();
+});        
+        
+/* ---------- Rendering Lune ---------- */
+function renderMoons() {
+const sys = universe.systems.find(s => s.id === currentSystemId);
+const planet = sys?.planets.find(p => p.id === currentPlanetId);
+const section = document.getElementById("moons-section");
+
+if (!planet) {
+section.style.display = "none";
+return;
+}
+
+section.style.display = "block";
+document.getElementById("current-planet-name").textContent = planet.name;
+
+const list =
+planet.moons?.map((m, i) => `
+<div class="item-card">
+<div>
+<h4>🌙 ${m.name}${m.tidalLocked ? " 🔒" : ""}</h4>
+<p style="font-size:12px;opacity:.7;margin:2px 0;">
+<b>Distance:</b> ${m.distance || "?"} |
+<b>Radius:</b> ${m.radius || "?"}
+</p>
+<p style="font-size:12px;opacity:.7;margin:2px 0;">
+<b>Composition:</b> ${m.composition || "?"} |
+<b>Period:</b> ${m.period || "?"}
+</p>
+</div>
+<button class="btn btn-danger" onclick="deleteMoon(${i})">🗑️</button>
+</div>`
+).join("") || "<p style='opacity:.5;'>No moons</p>";
+
+document.getElementById("moons-list").innerHTML = list;
+}
+
+/* ---------- Operazioni CRUD minime ---------- */
+function deletePlanet(id) {
+if (!confirm("Delete planet?")) return;
+const sys = universe.systems.find(s => s.id === currentSystemId);
+sys.planets = sys.planets.filter(p => p.id !== id);
+renderPlanets();
+}
+function deleteMoon(index) {
+if (!confirm("Delete moon?")) return;
+const sys = universe.systems.find(s => s.id === currentSystemId);
+const planet = sys?.planets.find(p => p.id === currentPlanetId);
+planet.moons.splice(index, 1);
+renderMoons();
+}
+
+/* ============================================================
+AAA – Aggancio al cambio TAB
+============================================================ */
+function switchTab(name) {
+document.querySelectorAll(".tab-content").forEach(el => el.classList.remove("active"));
+document.querySelectorAll(".tab").forEach(el => el.classList.remove("active"));
+event.target.classList.add("active");
+document.getElementById(`tab-${name}`).classList.add("active");
+
+if (name === "editor") {
+renderSystems(); //
+renderPlanets(); // Mostra subito i pianeti del sistema selezionato
+} else if (name === "viewer") {
+renderViewer();
+} else if (name === "export") {
+updateExports();
+}
+}   
+
+
+
+/* ============================================================
+IMPORT / EXPORT FUNZIONI
+============================================================ */
+
+function handleFile(e) {
+const file = e.target.files[0];
+if (!file) return;
+const reader = new FileReader();
+reader.onload = ev => {
+document.getElementById("json-input").value = ev.target.result;
+showStatus("File loaded! Click Apply JSON");
+};
+reader.readAsText(file);
+}
+
+function loadJSON() {
+const text = document.getElementById("json-input").value.trim();
+if (!text) { showStatus("Provide JSON data", true); return; }
+try {
+const data = JSON.parse(text);
+
+// se file multiverse
+if (data.universes) {
+multiverse = data;
+// prende il primo come attivo
+universe = multiverse.universes[0];
+currentUniverseId = universe.id || universe.name.toLowerCase().replace(/\s+/g, "-");
+showStatus("✅ Multiverse loaded!");
+}
+// se file universe singolo (retrocompatibile)
+else if (data.systems) {
+multiverse = { universes: [data] };
+universe = data;
+currentUniverseId = data.name.toLowerCase().replace(/\s+/g, "-");
+showStatus("✅ Universe loaded (legacy format)");
+} else throw new Error("Invalid JSON structure");
+
+renderUniverses();
+} catch (e) {
+showStatus("❌ Invalid JSON: " + e.message, true);
+}
+}
+
+
+/* ---------- Viewer ---------- */
+function renderViewer() {
+const container = document.getElementById("viewer-container");
+container.innerHTML = universe.systems.map(s => `
+<div class="panel">
+<div class="panel-header">
+<div class="panel-title">⭐ ${s.name}</div>
+</div>
+<p><strong>Star:</strong> ${s.star.name} (${s.star.type})</p>
+<p><strong>Age:</strong> ${s.age}</p>
+
+<div style="margin-top:15px;">
+<!-- Pianeti -->
+${s.planets.map(p => `
+<div class="item-card">
+<div>
+<h4>🪐 ${p.name}</h4>
+<p style="font-size:12px;opacity:.7;margin:2px 0;">
+<b>Order:</b> ${p.order || "?"} |
+<b>Air:</b> ${p.air || "n/a"} |
+<b>Has life:</b> ${p.hasLife ? "🌱" : "❌"} |
+<b>Has rings:</b> ${p.hasRings ? "💍 Yes" : "❌ No"}
+</p>
+<p style="font-size:12px;opacity:.7;margin:2px 0;">
+<b>Mass:</b> ${p.mass || "?"} |
+<b>Radius:</b> ${p.radius || "?"} |
+<b>Distance:</b> ${p.distance || "?"}
+</p>
+<p style="font-size:12px;opacity:.7;margin:2px 0;">
+<b>Water:</b> ${p.water || "?"} |
+<b>Terrain:</b> ${p.terrain || "?"} |
+<b>Moons:</b> ${p.moons?.length || 0}
+</p>
+
+<!-- Lune del pianeta -->
+${p.moons && p.moons.length ? `
+<div style="margin-left:10px;border-left:1px solid rgba(255,255,255,.1);padding-left:10px;">
+<h5 style="font-size:12px;margin:6px 0;">🌙 Moons</h5>
+${p.moons.map(m => `
+<div style="font-size:12px;opacity:.8;margin-bottom:4px;">
+🌙 <b>${m.name}</b>${m.tidalLocked ? " 🔒" : ""}<br>
+<span style="opacity:.7;">Distance:</span> ${m.distance || "?"} |
+<span style="opacity:.7;">Radius:</span> ${m.radius || "?"}
+</div>
+`).join('')}
+</div>
+` : ""}
+</div>
+</div>
+`).join('')}
+
+<!-- Altri oggetti -->
+${s.asteroidbelts?.map(a => `<div class="item-card">➰ Asteroid Belt <b>${a.name}</b> (${a.distance || "?"})</div>`).join('')}
+${s.cometgroups.map(c => `<div class="item-card">☄️ <b>${c.name}</b> (${c.composition || "?"})</div>`).join('')}
+${s.quasars.map(q => `<div class="item-card">✨ Quasar <b>${q.name}</b> – ${q.luminosity || ""}</div>`).join('')}
+${s.pulsars.map(pu => `<div class="item-card">🌀 Pulsar <b>${pu.name}</b> – ${pu.period || ""}</div>`).join('')}
+${s.constellations.map(co => `<div class="item-card">🌟 Constellation <b>${co.name}</b></div>`).join('')}
+${s.nebulas.map(ne => `<div class="item-card">🌫️ Nebula <b>${ne.name}</b> (${ne.type || ""})</div>`).join('')}
+</div>
+</div>
+`).join("");
+}
+
+/* ---------- Export JSON + pHTML ---------- */
+function updateExports() {
+// Esporta tutto il multiverso
+const exportTarget = multiverse.universes.length > 1 ? multiverse : universe;
+document.getElementById("json-output").textContent = JSON.stringify(exportTarget, null, 2);
+
+// Genera pHTML per l'universo attivo
+let phtml =
+"<!DOCTYPE html>\n<html>\n<head>\n<meta charset='UTF-8'>\n<link rel='stylesheet' href='p_2.0_tags.css'>\n</head>\n<body>\n<p-multiverse>";
+
+multiverse.universes.forEach(u => {
+phtml += `\n <p-universe name="${u.name}" version="${u.version || "2.0"}" age="${u.age || "13.4 billion years"}">`;
+u.systems.forEach(s => {
+phtml += `\n <p-solarsystem name="${s.name}" age="${s.age}">`;
+phtml += `\n <p-star name="${s.star.name}" type="${s.star.type}" mass="${s.star.mass}"></p-star>`;
+s.planets.forEach(p => {
+const tag = ["mercury","venus","earth","mars","jupiter","saturn","uranus","neptune"].includes(p.name.toLowerCase())
+? `p-${p.name.toLowerCase()}`
+: "p-planet";
+const nameAttr = tag === "p-planet" ? ` name="${p.name}"` : "";
+phtml += `\n <${tag}${nameAttr} order="${p.order}" mass="${p.mass}" radius="${p.radius}" air="${p.air}" terrain="${p.terrain}" water="${p.water}" distance="${p.distance || ''}"${p.hasRings ? " hasrings" : ""}${p.hasLife ? " population-autoevolve" : ""}></${tag}>`;
+});
+
+s.asteroidbelts?.forEach(a => {
+phtml += `\n <p-asteroidbelt name="${a.name}" composition="${a.composition}" count="${a.count}" distance="${a.distance}" width="${a.width}" discovered="${a.discovered}"></p-asteroidbelt>`;
+});
+        
+s.cometgroups.forEach(c => {
+phtml += `\n <p-cometgroup name="${c.name}" composition="${c.composition}" count="${c.count}"></p-cometgroup>`;
+});
+
+s.quasars.forEach(q => {
+phtml += `\n <p-quasar name="${q.name}" redshift="${q.redshift}" luminosity="${q.luminosity}"></p-quasar>`;
+});
+
+s.pulsars.forEach(pu => {
+phtml += `\n <p-pulsar name="${pu.name}" period="${pu.period}" mass="${pu.mass}"></p-pulsar>`;
+});
+
+s.constellations.forEach(co => {
+phtml += `\n <p-constellation name="${co.name}" stars="${co.stars}"></p-constellation>`;
+});
+
+s.nebulas.forEach(ne => {
+phtml += `\n <p-nebula name="${ne.name}" type="${ne.type}" distance="${ne.distance}"></p-nebula>`;
+});
+
+phtml += `\n </p-solarsystem>`;
+});
+phtml += `\n </p-universe>`;
+});
+
+phtml += "\n</p-multiverse>\n<script src='p_2.0_tags.js'><\/script>\n</body>\n</html>";
+document.getElementById("phtml-output").textContent = phtml;
+}
+
+/* ---------- Utility download ---------- */
+function download(blob, name) {
+const url = URL.createObjectURL(blob);
+const a = document.createElement("a");
+a.href = url;
+a.download = name;
+a.click();
+URL.revokeObjectURL(url);
+}
+function downloadJSON() {
+const exportTarget = multiverse.universes.length > 1 ? multiverse : universe;
+const blob = new Blob([JSON.stringify(exportTarget, null, 2)], { type: "application/json" });
+download(blob, "custom_multiverse.json");
+showStatus("JSON downloaded!");
+}
+function downloadPHTML() {
+const html = document.getElementById("phtml-output").textContent;
+const blob = new Blob([html], { type: "text/html" });
+download(blob, "custom_multiverse.html");
+showStatus("pHTML downloaded!");
+}
+
+/* ---------- Messaggi di stato ---------- */
+function showStatus(msg, err = false) {
+const el = document.getElementById("status");
+el.textContent = msg;
+el.className = "status show" + (err ? " error" : "");
+setTimeout(() => el.classList.remove("show"), 3000);
+}
+        
+function saveCustomPHTML() {
+const content = document.getElementById("phtml-editor-area").value.trim();
+if (!content) {
+showStatus("❌ Nessun contenuto pHTML da salvare", true);
+return;
+}
+
+// Avvolge il codice pHTML dell'editor in una pagina HTML completa
+const wrapped = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="p_2.0_tags.css">
+<title>Custom pHTML Universe</title>
+</head>
+<body>
+<!-- Esportazione da Visual Editor -->
+${content}
+<!-- Ricorda di includere i file p_2.0_tags.js e p_2.0_tags.css nella stessa cartella -->
+<script src="p_2.0_tags.js"><\/script>
+</body>
+</html>`;
+
+const blob = new Blob([wrapped], { type: "text/html" });
+const a = document.createElement("a");
+a.href = URL.createObjectURL(blob);
+a.download = "custom_multiverse.html";
+a.click();
+URL.revokeObjectURL(a.href);
+showStatus("✅ File HTML salvato!");
+}
+        
+function exportPHTMLtoJSON() {
+const content = document.getElementById("phtml-editor-area").value.trim();
+if (!content) {
+showStatus("❌ Nessun contenuto pHTML da esportare", true);
+return;
+}
+
+// Parsing del documento pHTML
+const parser = new DOMParser();
+const doc = parser.parseFromString(content, "text/html");
+
+// 🔹 1. Riconosci sia <p-multiverse> che vecchi <universes> / <universe>
+const multiverseEl =
+doc.querySelector("p-multiverse") || doc.querySelector("universes") || null;
+
+// Trova gli universi (nuovi <p-universe> oppure vecchi <universe>)
+const universeEls = multiverseEl
+? multiverseEl.querySelectorAll("p-universe")
+: doc.querySelectorAll("p-universe, universe");
+
+if (!universeEls.length) {
+showStatus("❌ Nessun elemento <p-universe> o <universe> trovato!", true);
+return;
+}
+
+const universes = [];
+
+universeEls.forEach(universeEl => {
+const systems = [];
+
+// 🔸 2. Cerca sistemi sia come <p-solarsystem> che come <solarsystem> (retro)
+universeEl.querySelectorAll("p-solarsystem, solarsystem").forEach(systemEl => {
+const system = {
+id: (systemEl.getAttribute("name") || "system").toLowerCase().replace(/\s+/g, "-"),
+name: systemEl.getAttribute("name") || "Unnamed System",
+age: systemEl.getAttribute("age") || "unknown",
+star: {},
+planets: [],
+asteroidbelts: [],        
+cometgroups: [],
+quasars: [],
+pulsars: [],
+constellations: [],
+nebulas: []
+};
+
+// 🌟 Stella principale
+const starEl = systemEl.querySelector("p-star");
+if (starEl) {
+system.star = {
+name: starEl.getAttribute("name") || "Star",
+type: starEl.getAttribute("type") || "",
+mass: starEl.getAttribute("mass") || "",
+temperature: starEl.getAttribute("temperature") || "",
+luminosity: starEl.getAttribute("luminosity") || ""
+};
+}
+
+// 🔶 Helper per raccogliere le lune di un pianeta
+function collectMoons(planetEl) {
+const moons = [];
+planetEl.querySelectorAll("p-moon").forEach(moonEl => {
+moons.push({
+name: moonEl.getAttribute("name") || "Moon",
+distance: moonEl.getAttribute("distance") || "",
+tidalLocked: moonEl.hasAttribute("tidal-locked")
+? true
+: moonEl.getAttribute("tidallocked") === "true",
+radius: moonEl.getAttribute("radius") || "",
+period: moonEl.getAttribute("period") || "",
+composition: moonEl.getAttribute("composition") || ""
+});
+});
+return moons;
+}
+
+// 🔸 Analizza ogni tag figlio
+systemEl.querySelectorAll(":scope > *").forEach(el => {
+const tag = el.tagName.toLowerCase();
+if (tag === "p-star") return;
+if (!tag.startsWith("p-")) return;
+
+const attrs = Array.from(el.attributes).reduce((obj, a) => {
+obj[a.name] = a.value;
+return obj;
+}, {});
+
+switch (tag) {
+case "p-asteroidbelt":
+system.asteroidbelts.push(attrs);
+break;                
+case "p-cometgroup":
+system.cometgroups.push(attrs);
+break;
+case "p-quasar":
+system.quasars.push(attrs);
+break;
+case "p-pulsar":
+system.pulsars.push(attrs);
+break;
+case "p-constellation":
+system.constellations.push(attrs);
+break;
+case "p-nebula":
+system.nebulas.push(attrs);
+break;
+default:
+// Pianeti (p-earth, p-mars o p-planet)
+const name =
+tag === "p-planet"
+? el.getAttribute("name") || "planet"
+: tag.replace(/^p-/, "");
+const planet = {
+id: name,
+name,
+order: parseInt(el.getAttribute("order")) || null,
+water: el.getAttribute("water") || "0%",
+terrain: el.getAttribute("terrain") || "100%",
+mass: el.getAttribute("mass") || "",
+radius: el.getAttribute("radius") || "",
+air: el.getAttribute("air") || "none",
+distance: el.getAttribute("distance") || "",
+hasLife: el.hasAttribute("population-autoevolve"),
+hasRings: el.hasAttribute("hasrings"),
+moons: collectMoons(el)
+};
+system.planets.push(planet);
+}
+});
+
+systems.push(system);
+});
+
+universes.push({
+id:
+universeEl.getAttribute("name")?.toLowerCase().replace(/\s+/g, "-") ||
+`uni-${Date.now()}`,
+name: universeEl.getAttribute("name") || "Unnamed Universe",
+version: universeEl.getAttribute("version") || "2.0",
+version: universeEl.getAttribute("age") || "13.4 billion years",        
+systems
+});
+});
+
+// 🔹 3. Multiverse o Universe singolo
+//const result = universes.length > 1 ? { universes } : universes[0];
+const result = { universes };        
+
+// Mostra l’output e scarica
+const output = JSON.stringify(result, null, 2);
+document.getElementById("phtml-json-text").textContent = output;
+document.getElementById("phtml-json-output").style.display = "block";
+
+const blob = new Blob([output], { type: "application/json" });
+const a = document.createElement("a");
+a.href = URL.createObjectURL(blob);
+a.download = universes.length > 1 ? "custom_multiverse.json" : "custom_multiverse_universe.json";
+a.click();
+URL.revokeObjectURL(a.href);
+
+showStatus("✅ JSON esportato con successo!");
+}
+
+
+/* ---------- Avvio ---------- */
+//renderSystems();
+renderUniverses(); // mostra la vista iniziale degli universi
+console.log("✅ pHTML Multiverse Environment Ready");
+</script>
+<script src="p_2.0_tags.js"></script>        
+</body>
+</html>

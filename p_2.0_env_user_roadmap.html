@@ -1,0 +1,78 @@
+## 🌌 pHTML Development Environment – TO‑DO List (roadmap)
+
+### 🧩 1. Espansione del linguaggio pHTML
+Obiettivo: arricchire il vocabolario di tag e relazioni.
+- [ ] Nuovi custom tags
+- `<p-asteroidbelt>` con attributi come `radius-inner`, `radius-outer`, `composition`, `density`.
+- `<p-blackhole>` con `mass`, `spin`, `distance`, `accretionDisk`.
+- `<p-civilization>` per indicare insediamenti avanzati su pianeti (`population`, `techLevel`, `alignment`).
+- `<p-observatory>` come tag meta, per rappresentare strumenti o punti di vista.
+- [ ] Attributi relazionali
+- `orbit-of="mars"` per mettere in relazione satelliti con il pianeta ospite.
+- `parent-id` e `child-of` per descrivere gerarchie flessibili tra oggetti.
+- `linked-to` / `influences` per creare connessioni tematiche (es. un quasar che influenza una nebula).
+
+---
+
+### 🧠 2. Gestione Relazioni e Dinamiche
+Obiettivo: introdurre logiche astronomiche o narrative.
+- [ ] Sistema di mapping interno tra oggetti (es. chi orbita intorno a chi).
+→ funzione `buildRelations()` che costruisce una rete di relazioni basata su attributi.
+- [ ] Visualizzazione testuale o grafica di queste relazioni (piccolo grafo 2D).
+- [ ] Possibilità di definire interazioni causali (es. `influence: gravitational`, `illumination: yes`).
+
+---
+
+### 🖼️ 3. Visualizzazione grafica (pianeti e lune)
+Obiettivo: aggiungere una rappresentazione visuale interattiva.
+- [ ] Canvas modale (aperto cliccando su una card) che disegna:
+- il pianeta come sfera centrata,
+- i satelliti su orbite proporzionali a `distance`,
+- barre/tooltip informativi (massa, raggio, atmosfera, composizione).
+- [ ] Funzione `renderPlanetCanvas(planetData)` indipendente dalla GUI.
+- [ ] Animazione orbitale semplice (loop requestAnimationFrame).
+- [ ] Zoom e rotazione con il mouse o touchscreen.
+- [ ] Possibilità di screenshot/export del canvas (immagine PNG).
+
+---
+
+### 🧭 4. Interfaccia e Usabilità
+- [ ] Aggiungere filtri di ricerca nei pannelli (“cerca pianeta …”).
+- [ ] Color theme per categorie – star, planet, moon, ecc. con icone più evidenti.
+- [ ] Modalità “Focus” – quando selezioni un pianeta, evidenzia solo lui e le sue lune.
+- [ ] Tooltips o infobox contestuali con i significati degli attributi.
+- [ ] Keyboard shortcuts:
+- `N` per nuovo oggetto,
+- `S` per salva, ecc.
+
+---
+
+### 🧰 5. Dati ed Esportazioni avanzate
+- [ ] Esportazione canvas → immagine PNG/TIFF.
+- [ ] Possibilità di esportare un file “dataset astronomico” (CSV o XML astronomico).
+- [ ] Import da altri formati (standard IAU, NASA exoplanet archive in CSV).
+- [ ] Versionamento dei file JSON (es. `version: 2.1`).
+- [ ] Integrazione metadati del progetto (autore, data, note, strumento).
+
+---
+
+### 🚀 6. Architettura e Librerie future
+- [ ] Creare una libreria pHTML Core JS separata che gestisce parsing, validazione e rendering.
+- [ ] Prevedere un sistema di plug‑in (nuovi tag e attributi caricati dinamicamente).
+- [ ] Creare un modulo API JS per interagire con i dati da altre applicazioni.
+
+---
+
+### 📚 7. Documentazione e Manuali
+- [x] Manuale introduttivo (sviluppatore/programmatore).
+- [x] Manuale utente (astronomo).
+- [ ] Documentazione di riferimento dei tag pHTML (“tag reference”).
+- [ ] Guida rapida con schede visive o poster PDF.
+
+---
+
+### 💡 8. Idee long‑term (opzionali)
+- [ ] Modalità “simulazione” con animazioni temporali (es. rotazione orbite, età sistema).
+- [ ] Supporto per audio/sonificazione dati.
+- [ ] Esportazione in 3D (glTF) per esplorazioni VR o AR.
+- [ ] Interfaccia web collaborativa (per più astronomi online).

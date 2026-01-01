@@ -1,0 +1,72 @@
+textarea {
+width: 30%;
+height: 600px;
+background: #111;
+color: #eee;
+border: 1px solid #555;
+border-radius: 8px;
+padding: 10px;
+resize: vertical;
+}
+.logo {margin: .5rem auto; max-width: 800px;}        
+p {
+        margin: 1rem auto;
+        padding: .5rem;
+        font-size: 1.1rem;
+        }        
+        
+.controlscanvas {
+margin: 10px auto;
+text-align: center;
+}
+input[type="file"] {
+color: #ccc;
+}
+.buttoncanvas {
+margin-top: 10px;
+padding: 8px 20px;
+background: #1e90ff;
+border: none;
+color: white;
+border-radius: 6px;
+cursor: pointer;
+}
+.buttoncanvas:hover {
+background: #0078d7;
+}
+.note {
+font-size: 13px;
+color: #999;
+}
+
+/* --- Modale info pianeta --- */
+.modalcanvas {
+display: none;
+position: fixed;
+top: 0; left: 0; right: 0; bottom: 0;
+background: rgba(0,0,0,0.6);
+align-items: center;
+justify-content: center;
+z-index: 999;
+}
+.modalcanvas-content {
+background: #111;
+padding: 20px 30px;
+border: 2px solid gold;
+border-radius: 10px;
+max-width: 400px;
+color: #fff;
+text-align: left;
+}
+.modalcanvas-content h2 {
+color: gold;
+margin-top: 0;
+}
+.closecanvas {
+float: right;
+font-size: 24px;
+cursor: pointer;
+color: #ccc;
+}
+        
+.closecanvas:hover { color: #fff; }
